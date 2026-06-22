@@ -1,5 +1,12 @@
 # RewardTrust
 
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=111827)
+![Vite](https://img.shields.io/badge/Vite-4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-16A34A?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
+![Data](https://img.shields.io/badge/Data-Static_JSON-0EA5E9?style=for-the-badge)
+![Ranking](https://img.shields.io/badge/Ranking-Unbiased-F97316?style=for-the-badge)
+
 RewardTrust is a React and Vite MVP for comparing Indian payment rewards before a user pays. It helps users enter a merchant and transaction amount, select the payment methods they own, and see a ranked recommendation with reward value, eligibility conditions, and a trust-oriented verification breakdown.
 
 The product is based on the RewardTrust PRD: a neutral transparency layer for UPI and card rewards. RewardTrust is not a payment app, cashback provider, or sponsored ranking surface. Its goal is to make reward outcomes understandable before the transaction decision is made.
