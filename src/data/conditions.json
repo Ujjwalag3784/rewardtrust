@@ -1,0 +1,52 @@
+{
+  "prime_required": {
+    "text": "Prime membership required for 5% cashback",
+    "type": "requirement",
+    "icon": "👑"
+  },
+  "non_prime_3pct": {
+    "text": "Non-Prime members receive 3% cashback",
+    "type": "info",
+    "icon": "ℹ️"
+  },
+  "min_spend_400": {
+    "text": "Minimum spend of ₹400 required per transaction",
+    "type": "requirement",
+    "icon": "⚠️"
+  },
+  "no_min_spend": {
+    "text": "No minimum transaction amount",
+    "type": "benefit",
+    "icon": "✓"
+  },
+  "exclusions_general": {
+    "text": "Fuel, utilities, and EMI transactions excluded",
+    "type": "exclusion",
+    "icon": "✖"
+  },
+  "swiggy_app_only": {
+    "text": "Applicable only on orders via Swiggy Mobile App",
+    "type": "requirement",
+    "icon": "📱"
+  },
+  "upi_device_binding": {
+    "text": "Requires Axis Kiwi UPI device registration",
+    "type": "requirement",
+    "icon": "🔒"
+  },
+  "monthly_capping_5000": {
+    "text": "5% cashback capped at ₹5,000 per billing cycle",
+    "type": "exclusion",
+    "icon": "🛑"
+  },
+  "cred_coins_only": {
+    "text": "Cashback awarded as CRED Coins (not direct cash)",
+    "type": "info",
+    "icon": "🪙"
+  },
+  "zomato_pro_benefits": {
+    "text": "May require active Zomato Gold for dining rewards",
+    "type": "requirement",
+    "icon": "✨"
+  }
+}

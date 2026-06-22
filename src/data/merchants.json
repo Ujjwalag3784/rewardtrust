@@ -1,0 +1,56 @@
+[
+  {
+    "id": "amazon",
+    "name": "Amazon",
+    "fullName": "Amazon India",
+    "category": "Shopping",
+    "logo": "/logos/amazon.svg",
+    "icon": "📦",
+    "accentColor": "#FF9900"
+  },
+  {
+    "id": "swiggy",
+    "name": "Swiggy",
+    "fullName": "Swiggy Food & Instamart",
+    "category": "Food Delivery",
+    "logo": "/logos/swiggy.svg",
+    "icon": "🧡",
+    "accentColor": "#FC8019"
+  },
+  {
+    "id": "zomato",
+    "name": "Zomato",
+    "fullName": "Zomato Delivery",
+    "category": "Food Delivery",
+    "logo": "/logos/zomato.svg",
+    "icon": "❤️",
+    "accentColor": "#CB202D"
+  },
+  {
+    "id": "blinkit",
+    "name": "Blinkit",
+    "fullName": "Blinkit Groceries",
+    "category": "Groceries",
+    "logo": "/logos/blinkit.svg",
+    "icon": "💛",
+    "accentColor": "#F7EC13"
+  },
+  {
+    "id": "zepto",
+    "name": "Zepto",
+    "fullName": "Zepto Delivery",
+    "category": "Groceries",
+    "logo": "/logos/zepto.svg",
+    "icon": "💜",
+    "accentColor": "#9C33EC"
+  },
+  {
+    "id": "starbucks",
+    "name": "Starbucks",
+    "fullName": "Starbucks Coffee",
+    "category": "Dining & Café",
+    "logo": "/logos/starbucks.svg",
+    "icon": "💚",
+    "accentColor": "#00704A"
+  }
+]

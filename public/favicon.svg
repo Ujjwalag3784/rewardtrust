@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="RewardTrust">
+  <rect width="64" height="64" rx="14" fill="#0A0F1D"/>
+  <path d="M32 10L49 17V30C49 41.5 41.8 51.4 32 55C22.2 51.4 15 41.5 15 30V17L32 10Z" fill="#10B981"/>
+  <path d="M24 24H34.5C38.6 24 41.5 26.6 41.5 30.3C41.5 33 40 35.1 37.6 36.1L42 44H36.2L32.4 37H29.3V44H24V24ZM29.3 28.5V32.8H34C35.4 32.8 36.2 32 36.2 30.7C36.2 29.3 35.4 28.5 34 28.5H29.3Z" fill="#0A0F1D"/>
+</svg>

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "kiwi",
+    "name": "Kiwi",
+    "fullName": "Axis Bank Kiwi Credit Card",
+    "shortName": "Kiwi",
+    "type": "UPI Credit Card",
+    "badge": "KW",
+    "bgGradient": "linear-gradient(135deg, #1E3A1E 0%, #111E11 100%)",
+    "borderColor": "#4ADE80",
+    "textColor": "#4ADE80"
+  },
+  {
+    "id": "amazon_pay_icici",
+    "name": "Amazon Pay ICICI",
+    "fullName": "Amazon Pay ICICI Credit Card",
+    "shortName": "Amazon Pay ICICI",
+    "type": "Credit Card",
+    "badge": "AP",
+    "bgGradient": "linear-gradient(135deg, #1B263B 0%, #0D1B2A 100%)",
+    "borderColor": "#FF9900",
+    "textColor": "#FF9900"
+  },
+  {
+    "id": "sbi_cashback",
+    "name": "SBI Cashback",
+    "fullName": "SBI Cashback Credit Card",
+    "shortName": "SBI Cashback",
+    "type": "Credit Card",
+    "badge": "SB",
+    "bgGradient": "linear-gradient(135deg, #3A2E1B 0%, #1F170D 100%)",
+    "borderColor": "#F59E0B",
+    "textColor": "#F59E0B"
+  },
+  {
+    "id": "hdfc_swiggy",
+    "name": "HDFC Swiggy",
+    "fullName": "Swiggy HDFC Credit Card",
+    "shortName": "HDFC Swiggy",
+    "type": "Credit Card",
+    "badge": "HS",
+    "bgGradient": "linear-gradient(135deg, #2E1E3A 0%, #170D1F 100%)",
+    "borderColor": "#FC8019",
+    "textColor": "#FC8019"
+  },
+  {
+    "id": "cred",
+    "name": "CRED",
+    "fullName": "CRED Pay / UPI",
+    "shortName": "CRED",
+    "type": "UPI / Payments App",
+    "badge": "CR",
+    "bgGradient": "linear-gradient(135deg, #2D3748 0%, #1A202C 100%)",
+    "borderColor": "#A0AEC0",
+    "textColor": "#FFFFFF"
+  }
+]
