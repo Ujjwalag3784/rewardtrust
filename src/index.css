@@ -1838,3 +1838,266 @@ input:checked + .toggle-slider:before {
     padding: 8px 20px 2px 20px;
   }
 }
+
+/* ============================================================
+   Phase 2 — Verdict + MCC UI (explainable engine)
+   ============================================================ */
+.verdict-eligible   { --verdict-color: #16A34A; }
+.verdict-partial    { --verdict-color: #F59E0B; }
+.verdict-ineligible { --verdict-color: #EF4444; }
+.verdict-unknown    { --verdict-color: #94A3B8; }
+
+/* Verdict badge on alternative cards */
+.badge-verdict {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: var(--verdict-color, #94A3B8);
+  border: 1px solid var(--verdict-color, #94A3B8);
+  background: color-mix(in srgb, var(--verdict-color, #94A3B8) 12%, transparent);
+  white-space: nowrap;
+}
+
+/* Reason box on the featured card */
+.verdict-reason-box {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--verdict-color, #94A3B8) 10%, #0d1b2a);
+  border-left: 3px solid var(--verdict-color, #94A3B8);
+}
+.verdict-reason-icon { color: var(--verdict-color, #94A3B8); font-weight: 700; }
+.verdict-reason-text { font-size: 13px; line-height: 1.45; color: #E2E8F0; }
+
+/* Verdict header inside the calculation card */
+.calc-verdict-header {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+.calc-verdict-header.verdict-eligible   { background: rgba(22,163,74,0.12);  border: 1px solid rgba(22,163,74,0.4); }
+.calc-verdict-header.verdict-partial    { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.4); }
+.calc-verdict-header.verdict-ineligible { background: rgba(239,68,68,0.12);  border: 1px solid rgba(239,68,68,0.4); }
+.calc-verdict-header.verdict-unknown    { background: rgba(148,163,184,0.12);border: 1px solid rgba(148,163,184,0.4); }
+.calc-verdict-icon { font-size: 18px; font-weight: 700; line-height: 1.2; }
+.calc-verdict-label { font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: #F1F5F9; }
+.calc-verdict-reason { font-size: 13px; line-height: 1.45; color: #CBD5E1; margin-top: 3px; }
+
+/* MCC chips */
+.mcc-chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.mcc-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(14,165,233,0.14);
+  color: #7DD3FC;
+  border: 1px solid rgba(14,165,233,0.3);
+}
+
+/* ============================================================
+   Phase 3 — QR scanner UI
+   ============================================================ */
+.btn-scan-qr {
+  margin-top: 14px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(74,222,128,0.4);
+  background: rgba(74,222,128,0.10);
+  color: #4ADE80;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-scan-qr:hover { background: rgba(74,222,128,0.18); }
+
+.qr-scan-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  padding: 22px 16px;
+  margin: 14px 0;
+  border: 1.5px dashed rgba(148,163,184,0.4);
+  border-radius: 14px;
+  background: rgba(15,27,42,0.5);
+}
+.qr-scan-icon { font-size: 30px; }
+.qr-scan-hint { font-size: 12px; color: #94A3B8; line-height: 1.4; }
+
+.qr-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(148,163,184,0.3);
+  background: #0d1b2a;
+  color: #E2E8F0;
+  font-family: monospace;
+  font-size: 12px;
+  resize: vertical;
+}
+
+.qr-sample-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.qr-sample-btn { font-size: 11px; }
+
+.qr-error-box {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: #FCA5A5;
+  font-size: 13px;
+}
+
+.qr-result-card {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(15,27,42,0.7);
+  border: 1px solid rgba(148,163,184,0.2);
+}
+.qr-result-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(148,163,184,0.12);
+  font-size: 13px;
+}
+.qr-result-lbl { color: #94A3B8; }
+.qr-result-val { color: #E2E8F0; font-weight: 600; text-align: right; }
+.qr-notes {
+  list-style: none;
+  padding: 10px 0 0;
+  margin: 0;
+}
+.qr-notes li { font-size: 12px; color: #CBD5E1; line-height: 1.5; margin-bottom: 4px; }
+
+/* ============================================================
+   Phase 4 — Post-payment verification loop
+   ============================================================ */
+.btn-track-reward {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(14,165,233,0.5);
+  background: rgba(14,165,233,0.10);
+  color: #7DD3FC;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-track-reward:hover { background: rgba(14,165,233,0.18); }
+
+.history-empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: #94A3B8;
+}
+.history-empty-icon { font-size: 34px; display: block; margin-bottom: 10px; }
+
+.history-item.outcome-received     { border-left: 3px solid #16A34A; }
+.history-item.outcome-partial      { border-left: 3px solid #F59E0B; }
+.history-item.outcome-not_received { border-left: 3px solid #EF4444; }
+.history-item.outcome-pending      { border-left: 3px solid #64748B; }
+
+.hist-outcome-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 3px 7px;
+  border-radius: 6px;
+}
+.hist-outcome-badge.pending      { background: rgba(100,116,139,0.2); color: #CBD5E1; }
+.hist-outcome-badge.received     { background: rgba(22,163,74,0.18);  color: #4ADE80; }
+.hist-outcome-badge.partial      { background: rgba(245,158,11,0.18); color: #FBBF24; }
+.hist-outcome-badge.not_received { background: rgba(239,68,68,0.18);  color: #FCA5A5; }
+
+.hist-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.hist-action {
+  flex: 1;
+  min-width: 90px;
+  padding: 8px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.hist-action.received     { background: rgba(22,163,74,0.14);  color: #4ADE80; border-color: rgba(22,163,74,0.4); }
+.hist-action.partial      { background: rgba(245,158,11,0.14); color: #FBBF24; border-color: rgba(245,158,11,0.4); }
+.hist-action.not_received { background: rgba(239,68,68,0.14);  color: #FCA5A5; border-color: rgba(239,68,68,0.4); }
+
+.hist-resolved {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #94A3B8;
+}
+.hist-reset-link {
+  background: none;
+  border: none;
+  color: #7DD3FC;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.hist-mcc { font-size: 11px; color: #64748B; margin-top: 4px; }
+
+/* ============================================================
+   Phase 5 — Accessibility: button resets + visible focus
+   ============================================================ */
+.tab-item,
+.merchant-card,
+.method-select-card,
+.brand-logo,
+.bell-icon,
+.linkish {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  text-align: inherit;
+  cursor: pointer;
+}
+.linkish { padding: 0; text-decoration: none; }
+
+/* Keyboard focus is clearly visible; mouse clicks stay clean (focus-visible only). */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible,
+.method-select-card:focus-visible,
+.merchant-card:focus-visible {
+  outline: 2px solid #4ADE80;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ---- QR camera viewport ---- */
+.qr-camera-wrap { margin: 14px 0; }
+.qr-reader {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(148,163,184,0.3);
+}
+.qr-reader video { width: 100% !important; height: auto !important; display: block; }
+.qr-or { margin-top: 16px; }

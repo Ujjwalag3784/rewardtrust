@@ -48,5 +48,20 @@
     "text": "May require active Zomato Gold for dining rewards",
     "type": "requirement",
     "icon": "✨"
+  },
+  "exclusions_mcc": {
+    "text": "This merchant category (MCC) is excluded from rewards under the card's terms",
+    "type": "exclusion",
+    "icon": "✖"
+  },
+  "partner_merchant": {
+    "text": "Higher rate applies only to designated Amazon Pay partner merchants",
+    "type": "requirement",
+    "icon": "🤝"
+  },
+  "fuel_no_reward": {
+    "text": "Fuel earns no reward (surcharge waiver only)",
+    "type": "exclusion",
+    "icon": "⛽"
   }
 }

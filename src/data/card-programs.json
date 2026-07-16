@@ -1,0 +1,97 @@
+{
+  "kiwi": {
+    "cardId": "kiwi",
+    "cardName": "Kiwi (RuPay Credit Card on UPI)",
+    "network": "RuPay",
+    "rewardType": "cashback",
+    "rewardUnitNote": "Paid as Kiwi cashback ('Kiwis') redeemable to the linked UPI account.",
+    "source": {
+      "primaryUrl": "https://gokiwi.in/rewards-policy-v2",
+      "helpUrl": "https://gokiwi.in/helpcenter/rewards",
+      "tier": "official",
+      "lastVerified": "2025-05-01",
+      "note": "Kiwi revised reward rates and expanded MCC exclusions effective 1 May 2025."
+    },
+    "rules": [
+      { "id": "kiwi_upi", "label": "UPI Scan & Pay", "channels": ["upi", "online", "offline"], "match": { "mccNotIn": ["5541","5542","4900","6513","6540","6300","5944","9399","8211"] }, "rate": 0.015, "isHeadline": true, "conditions": ["upi_device_binding"] },
+      { "id": "kiwi_base", "label": "Excluded category (no reward)", "channels": ["upi","online","offline"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
+    ],
+    "notes": "Kiwi Neon membership offers a higher rate; not modelled here. Excluded MCCs earn zero."
+  },
+  "amazon_pay_icici": {
+    "cardId": "amazon_pay_icici",
+    "cardName": "Amazon Pay ICICI Bank Credit Card",
+    "network": "Visa",
+    "rewardType": "amazon_pay_balance",
+    "rewardUnitNote": "Paid as Amazon Pay balance.",
+    "source": {
+      "primaryUrl": "https://www.amazon.in/gp/cobrandcard/marketing.html",
+      "helpUrl": "https://www.icici.bank.in/personal-banking/cards/credit-card/amazon-pay-credit-card",
+      "tier": "official",
+      "lastVerified": "2025-05-15"
+    },
+    "rules": [
+      { "id": "apay_amazon_prime", "label": "Amazon.in — Prime member", "channels": ["online"], "match": { "merchants": ["amazon"] }, "rate": 0.05, "isHeadline": true, "requires": "prime", "conditions": ["prime_required"] },
+      { "id": "apay_amazon_nonprime", "label": "Amazon.in — non-Prime", "channels": ["online"], "match": { "merchants": ["amazon"] }, "rate": 0.03, "conditions": ["non_prime_3pct"] },
+      { "id": "apay_partners", "label": "Amazon Pay partner merchants", "channels": ["online"], "match": { "merchants": [] }, "rate": 0.02, "conditions": ["partner_merchant"] },
+      { "id": "apay_base", "label": "All other spends", "channels": ["online","offline","upi"], "match": { "mccNotIn": ["5541","5542"] }, "rate": 0.01 },
+      { "id": "apay_excluded", "label": "Fuel (no reward, surcharge waiver only)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["fuel_no_reward"] }
+    ],
+    "notes": "Partner merchant list is dynamic and not populated in this dataset; unmatched merchants earn 1%."
+  },
+  "sbi_cashback": {
+    "cardId": "sbi_cashback",
+    "cardName": "SBI Cashback Credit Card",
+    "network": "Visa",
+    "rewardType": "cashback",
+    "rewardUnitNote": "Statement cashback.",
+    "source": {
+      "primaryUrl": "https://www.sbicard.com/sbi-card-en/assets/docs/pdf/cashback-revised.pdf",
+      "tier": "official",
+      "lastVerified": "2025-04-20",
+      "note": "Monthly cashback cap has been revised historically (reported ₹5,000 then ₹2,000). Verify current cap before relying on it."
+    },
+    "rules": [
+      { "id": "sbi_online", "label": "Online spends 5%", "channels": ["online"], "match": { "mccNotIn": ["4900","6300","5541","5542","6513","6540","5944","8211","9399"] }, "rate": 0.05, "cap": 5000, "capPeriod": "month", "isHeadline": true, "capNeedsVerification": true },
+      { "id": "sbi_offline", "label": "Offline / other spends 1%", "channels": ["offline","upi"], "match": { "mccNotIn": ["4900","6300","5541","5542","6513","6540","5944","8211","9399"] }, "rate": 0.01 },
+      { "id": "sbi_excluded", "label": "Excluded MCC (no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
+    ],
+    "notes": "SBI is reported to use an internal category mapping that can override public MCC definitions — a known source of cashback disputes."
+  },
+  "hdfc_swiggy": {
+    "cardId": "hdfc_swiggy",
+    "cardName": "Swiggy HDFC Bank Credit Card",
+    "network": "Mastercard",
+    "rewardType": "cashback",
+    "rewardUnitNote": "Cashback credited as statement credit / Swiggy Money per variant.",
+    "source": {
+      "primaryUrl": "https://www.hdfc.bank.in/personal/pay/cards/credit-cards/swiggy-hdfc-bank-credit-card",
+      "tier": "official",
+      "lastVerified": "2025-02-13"
+    },
+    "rules": [
+      { "id": "hdfc_swiggy_app", "label": "Swiggy app (food, Instamart, Dineout) 10%", "channels": ["online"], "match": { "merchants": ["swiggy"] }, "rate": 0.10, "isHeadline": true, "conditions": ["swiggy_app_only"] },
+      { "id": "hdfc_online", "label": "Online spends 5%", "channels": ["online"], "match": { "mccNotIn": ["5262","6513","4900","5541","5542","6300","5944","9399"] }, "rate": 0.05, "cap": 1500, "capPeriod": "month", "isHeadline": true },
+      { "id": "hdfc_base", "label": "All other categories 1%", "channels": ["online","offline","upi"], "match": {}, "rate": 0.01 }
+    ],
+    "notes": "The 5% online tier is MCC-based. Amazon settles as MCC 5262 (Marketplaces), which is excluded from 5% — so Amazon earns only the 1% base rate."
+  },
+  "cred": {
+    "cardId": "cred",
+    "cardName": "CRED (UPI / RuPay Credit Card)",
+    "network": "RuPay",
+    "rewardType": "points",
+    "rewardUnitNote": "Rewards accrue as CRED Coins / CRED reward points, not direct cash; redemption value varies.",
+    "source": {
+      "primaryUrl": "https://cred.club/terms",
+      "tier": "official",
+      "lastVerified": "2026-06-29",
+      "note": "CRED Coins are loyalty points earned primarily on credit-card bill payments; UPI/scan-and-pay reward rates vary and are approximate."
+    },
+    "rules": [
+      { "id": "cred_upi", "label": "UPI / online spends (as CRED Coins)", "channels": ["upi","online"], "match": { "mccNotIn": ["5541","5542","4900","6513","6540","6300","5944"] }, "rate": 0.01, "isHeadline": true, "conditions": ["cred_coins_only"] },
+      { "id": "cred_excluded", "label": "Excluded MCC (no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
+    ],
+    "notes": "Reward currency is CRED Coins, whose cash-equivalent value is variable — confidence is intentionally modest."
+  }
+}

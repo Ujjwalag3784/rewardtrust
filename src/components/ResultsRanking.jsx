@@ -10,9 +10,10 @@ export default function ResultsRanking({
   rankedResults,
   paymentMethods,
   onBack,
-  onShowTrustReport
+  onShowTrustReport,
+  onTrackPrediction
 }) {
-  // Track which card is currently clicked/inspected (default to the top ranked card)
+  // Track which card is currently inspected (default to the top ranked card)
   const [selectedMethodId, setSelectedMethodId] = useState(
     rankedResults.length > 0 ? rankedResults[0].methodId : null
   );
@@ -23,7 +24,7 @@ export default function ResultsRanking({
   // Separate the active card (to show on top) and alternatives (listed below)
   const alternatives = rankedResults.filter(r => r.methodId !== activeResult.methodId);
 
-  // Find the overall best reward amount (the first item in rankedResults, since it's sorted)
+  // Overall best reward amount (first item, since sorted)
   const bestRewardAmount = rankedResults.length > 0 ? rankedResults[0].rewardAmount : 0;
 
   return (
@@ -79,6 +80,13 @@ export default function ResultsRanking({
           />
         )}
 
+        {/* Track this reward — feeds the post-payment verification loop */}
+        {onTrackPrediction && !activeResult.isUnavailable && (
+          <button className="btn-track-reward" onClick={() => onTrackPrediction(activeResult)}>
+            ＋ Track this reward (tell us if it posts)
+          </button>
+        )}
+
         {/* Alternatives Section */}
         {alternatives.length > 0 && (
           <div className="alternatives-section">
@@ -104,35 +112,49 @@ export default function ResultsRanking({
           </div>
         )}
 
-        {/* Trust Indicators Card */}
-        {!activeResult.isUnavailable && (
-          <div className="trust-indicators-card animate-fade-in">
-            <h4 className="section-label">TRUST INDICATORS</h4>
-            <div className="trust-table">
-              <div className="trust-row">
-                <span className="trust-cell-lbl">Official Source</span>
-                <span
+        {/* Trust Indicators Card — backed by real source metadata */}
+        <div className="trust-indicators-card animate-fade-in">
+          <h4 className="section-label">TRUST INDICATORS</h4>
+          <div className="trust-table">
+            <div className="trust-row">
+              <span className="trust-cell-lbl">Official Source</span>
+              {activeResult.source?.url ? (
+                <a
                   className="trust-cell-val link-emerald"
-                  onClick={() => onShowTrustReport(activeResult)}
+                  href={activeResult.source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  {activeMethod?.name} T&C ↗
-                </span>
-              </div>
-              <div className="trust-row">
-                <span className="trust-cell-lbl">Last Verification</span>
-                <span className="trust-cell-val">{activeResult.lastVerified}</span>
-              </div>
-              <div className="trust-row">
-                <span className="trust-cell-lbl">Source Type</span>
+                  {activeResult.sourceType} ↗
+                </a>
+              ) : (
                 <span className="trust-cell-val">{activeResult.sourceType}</span>
-              </div>
-              <div className="trust-row">
-                <span className="trust-cell-lbl">Methodology</span>
-                <span className="trust-cell-val">Institutional Verification</span>
-              </div>
+              )}
+            </div>
+            <div className="trust-row">
+              <span className="trust-cell-lbl">Last Verified</span>
+              <span className="trust-cell-val">{activeResult.lastVerified}</span>
+            </div>
+            <div className="trust-row">
+              <span className="trust-cell-lbl">Confidence</span>
+              <span className="trust-cell-val">
+                {activeResult.confidence?.score ?? 0}/100 ({activeResult.confidence?.band})
+              </span>
+            </div>
+            <div className="trust-row">
+              <span className="trust-cell-lbl">Merchant MCC</span>
+              <span className="trust-cell-val">
+                {activeResult.mcc ? `${activeResult.mcc} · ${activeResult.mccLabel}` : 'Unknown'}
+              </span>
+            </div>
+            <div className="trust-row">
+              <span className="trust-cell-lbl">Full report</span>
+              <button type="button" className="trust-cell-val link-emerald linkish" onClick={() => onShowTrustReport(activeResult)}>
+                View Trust Report →
+              </button>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

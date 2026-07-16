@@ -56,24 +56,6 @@ export default function AmountInput({ merchant, amount, onChangeAmount, onContin
           </div>
         </div>
 
-        {/* Info Grid */}
-        <div className="stats-grid">
-          <div className="stat-box">
-            <div className="stat-header">
-              <span className="dot-active"></span>
-              AVG REWARDS
-            </div>
-            <div className="stat-value">5.2%</div>
-          </div>
-          <div className="stat-box">
-            <div className="stat-header">
-              <span className="dot-active"></span>
-              ACTIVE CARDS
-            </div>
-            <div className="stat-value">5 Units</div>
-          </div>
-        </div>
-
         {/* Continue Button */}
         <div className="action-button-container">
           <button

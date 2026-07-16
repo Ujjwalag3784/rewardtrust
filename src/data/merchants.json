@@ -4,6 +4,12 @@
     "name": "Amazon",
     "fullName": "Amazon India",
     "category": "Shopping",
+    "mcc": "5262",
+    "mccConfidence": "high",
+    "mccNote": "Amazon.in commonly settles as MCC 5262 (Marketplaces). Several cards exclude 5262 from their headline online reward.",
+    "vpaPatterns": [
+      "amazon"
+    ],
     "logo": "/logos/amazon.svg",
     "icon": "📦",
     "accentColor": "#FF9900"
@@ -13,6 +19,12 @@
     "name": "Swiggy",
     "fullName": "Swiggy Food & Instamart",
     "category": "Food Delivery",
+    "mcc": "5814",
+    "mccConfidence": "medium",
+    "mccNote": "Food delivery typically settles as MCC 5814 (Fast Food). Instamart orders may settle differently.",
+    "vpaPatterns": [
+      "swiggy"
+    ],
     "logo": "/logos/swiggy.svg",
     "icon": "🧡",
     "accentColor": "#FC8019"
@@ -22,6 +34,12 @@
     "name": "Zomato",
     "fullName": "Zomato Delivery",
     "category": "Food Delivery",
+    "mcc": "5814",
+    "mccConfidence": "medium",
+    "mccNote": "Food delivery typically settles as MCC 5814 (Fast Food).",
+    "vpaPatterns": [
+      "zomato"
+    ],
     "logo": "/logos/zomato.svg",
     "icon": "❤️",
     "accentColor": "#CB202D"
@@ -31,6 +49,13 @@
     "name": "Blinkit",
     "fullName": "Blinkit Groceries",
     "category": "Groceries",
+    "mcc": "5411",
+    "mccConfidence": "medium",
+    "mccNote": "Quick-commerce grocery typically settles as MCC 5411 (Grocery Stores).",
+    "vpaPatterns": [
+      "blinkit",
+      "grofers"
+    ],
     "logo": "/logos/blinkit.svg",
     "icon": "💛",
     "accentColor": "#F7EC13"
@@ -40,6 +65,13 @@
     "name": "Zepto",
     "fullName": "Zepto Delivery",
     "category": "Groceries",
+    "mcc": "5411",
+    "mccConfidence": "medium",
+    "mccNote": "Quick-commerce grocery typically settles as MCC 5411 (Grocery Stores).",
+    "vpaPatterns": [
+      "zeptonow",
+      "zepto"
+    ],
     "logo": "/logos/zepto.svg",
     "icon": "💜",
     "accentColor": "#9C33EC"
@@ -49,6 +81,13 @@
     "name": "Starbucks",
     "fullName": "Starbucks Coffee",
     "category": "Dining & Café",
+    "mcc": "5814",
+    "mccConfidence": "medium",
+    "mccNote": "Café / QSR typically settles as MCC 5814 (Fast Food); some outlets use 5812 (Restaurants).",
+    "vpaPatterns": [
+      "starbucks",
+      "tatastarbucks"
+    ],
     "logo": "/logos/starbucks.svg",
     "icon": "💚",
     "accentColor": "#00704A"
