@@ -2288,3 +2288,146 @@ input:focus-visible,
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
+
+/* ============================================================
+   Phase 9.1 — Premium theme overhaul (cohesive foundation)
+   Overrides the legacy template palette/typography. Loaded last,
+   so it wins the cascade without touching layout structure.
+   ============================================================ */
+:root {
+  /* Refined near-black neutral palette (not navy) */
+  --bg-page: #060607;
+  --bg-app: #0B0B0E;
+  --bg-elevated: #141418;
+  --bg-card: #141418;
+  --bg-card-selected: #1C1C22;
+  --border-card: rgba(255,255,255,0.075);
+  --border-strong: rgba(255,255,255,0.12);
+
+  /* Restrained single accent (trust green), used sparingly */
+  --accent: #34D399;
+  --accent-light: #6EE7B7;
+  --accent-strong: #10B981;
+  --accent-dim: rgba(52,211,153,0.12);
+  --accent-ink: #052e22;            /* dark text on accent buttons */
+
+  /* Softer, Apple-grade text (avoid harsh pure white) */
+  --text-primary: #F4F4F6;
+  --text-secondary: #A0A6B0;
+  --text-muted: #6B7280;
+
+  /* Muted status colors (premium ≠ neon) */
+  --yellow: #E0A83E; --red: #F26D6D; --blue: #5B9DF0; --purple: #A78BFA;
+
+  --shadow-2: 0 8px 24px -10px rgba(0,0,0,0.6);
+  --shadow-3: 0 24px 60px -18px rgba(0,0,0,0.75);
+  --shadow-glow: none;
+}
+
+/* Desktop: float the phone on a dark, subtly-lit canvas (not flat gray) */
+body {
+  background: radial-gradient(1200px 800px at 50% -10%, #16161c 0%, #0a0a0c 45%, #060607 100%);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  letter-spacing: -0.006em;
+}
+.mobile-frame-wrapper {
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 40px 120px -30px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.02) inset;
+}
+
+/* ---- Typography system ---- */
+.hero-title { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1.08; letter-spacing: -0.03em; }
+.hero-subtitle { font-size: 15px; color: var(--text-secondary); line-height: 1.5; max-width: 34ch; }
+.section-title { font-family: var(--font-display); font-weight: 700; font-size: 21px; letter-spacing: -0.02em; }
+.section-subtitle { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+.header-title { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.01em; }
+
+/* Overline labels — the small-caps rhythm that reads "designed" */
+.section-label, .subbar-lbl, .stat-unit-lbl, .breakdown-lbl, .verdict-lbl,
+.settings-card-title, .timeline-section-title, .freshness-lbl, .qr-result-lbl,
+.calc-verdict-label, .wallet-strip-head .section-label, .card-inner-title, .section-small-title {
+  text-transform: uppercase; letter-spacing: 0.09em; font-weight: 600; color: var(--text-muted); font-size: 10.5px;
+}
+
+/* Big numbers use display font + tabular figures */
+.reward-value, .gauge-score-value, .res-value-amt, .stat-unit-val, .best-pick-card strong, .amount-input-field, .hist-amt {
+  font-family: var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.reward-value { font-size: 30px; font-weight: 800; }
+
+/* ---- Surfaces: hairline borders, softer radius, calmer depth ---- */
+.reward-card, .res-row, .settings-card, .qr-result-card, .trust-verdict-card,
+.breakdown-card, .source-quality-card, .freshness-card, .methodology-card,
+.calculation-details-card, .trust-indicators-card, .history-item, .timeline-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 18px;
+  box-shadow: var(--shadow-2);
+}
+.merchant-card, .method-select-card, .amount-input-card { border-radius: 16px; }
+.section-container { gap: 18px; }
+
+/* ---- Buttons: solid, confident, no gamer glow ---- */
+.btn-primary {
+  background-image: none;
+  background-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 15px 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 16px -8px rgba(52,211,153,0.6);
+  letter-spacing: 0;
+}
+.btn-primary:not(.disabled):hover { background-color: var(--accent-light); }
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: #1a1a1f; color: var(--text-muted); box-shadow: none;
+}
+.btn-pay-cta {
+  background: var(--accent); color: var(--accent-ink); font-weight: 700; border-radius: 14px;
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border-strong);
+  color: var(--text-primary); border-radius: 12px; font-weight: 600;
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+/* Badges & chips — quieter, tokenised */
+.badge-trust, .badge-location, .mcc-chip, .wallet-chip, .badge-verdict, .badge-trust-level {
+  border-radius: var(--r-pill);
+}
+.badge-trust { background: var(--accent-dim); color: var(--accent-light); border: 1px solid rgba(52,211,153,0.25); font-weight: 600; }
+.mcc-chip { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-card); }
+
+/* Card monogram: refined chip, not a loud gradient block */
+.method-badge-icon {
+  border-radius: 12px; font-weight: 800; font-family: var(--font-display);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 2px 6px -2px rgba(0,0,0,0.6);
+}
+
+/* Bottom tab bar — glassy, quiet, refined */
+.app-bottom-tab-bar { background: color-mix(in srgb, var(--bg-app) 82%, transparent); border-top: 1px solid var(--border-card); }
+.tab-label { font-size: 10.5px; letter-spacing: 0.01em; }
+.tab-item { color: var(--text-muted); }
+
+/* Merchant grid tiles: calmer, tappable, consistent */
+.merchant-card { background: var(--bg-card); border: 1px solid var(--border-card); }
+.merchant-card.selected { border-color: var(--accent); background: var(--accent-dim); }
+
+/* Inputs */
+.search-input, .qr-input, .amount-input-field, .login-input {
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border-strong); color: var(--text-primary);
+}
+.search-bar-container { background: rgba(255,255,255,0.04); border: 1px solid var(--border-strong); border-radius: 14px; }
+
+/* Assistant omnibox — premium hero affordance */
+.assistant-omnibox {
+  background: linear-gradient(135deg, rgba(52,211,153,0.10), rgba(255,255,255,0.02));
+  border: 1px solid rgba(52,211,153,0.28); color: var(--text-secondary); border-radius: 16px;
+}
+
+/* Dividers */
+.divider, hr.divider { border: none; border-top: 1px solid var(--border-card); }
