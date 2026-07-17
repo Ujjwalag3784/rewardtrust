@@ -2101,3 +2101,42 @@ input:focus-visible,
 }
 .qr-reader video { width: 100% !important; height: auto !important; display: block; }
 .qr-or { margin-top: 16px; }
+
+/* ============================================================
+   Phase 8 — Wallet, login, grouped results
+   ============================================================ */
+.login-phone-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.login-cc { padding: 12px 10px; border-radius: 10px; background: #0d1b2a; border: 1px solid rgba(148,163,184,0.3); color: #E2E8F0; font-weight: 700; }
+.login-input { flex: 1; }
+
+.wallet-strip { padding: 14px 20px 4px; }
+.wallet-strip-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.wallet-manage { color: #4ADE80; font-size: 12px; font-weight: 700; }
+.wallet-chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; }
+.wallet-chip { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 12px; font-weight: 600; color: #E2E8F0; padding: 5px 10px 5px 5px; border: 1px solid; border-radius: 999px; background: rgba(255,255,255,0.03); }
+.wallet-chip-badge { width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; border: 1px solid; font-size: 9px; font-weight: 800; color: #fff; }
+
+.best-pick-banner { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; margin: 12px 0; border-radius: 12px; background: linear-gradient(135deg, rgba(22,163,74,0.18), rgba(22,163,74,0.06)); border: 1px solid rgba(22,163,74,0.4); }
+.best-pick-lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.05em; color: #4ADE80; }
+.best-pick-card { font-size: 14px; color: #F1F5F9; }
+
+.res-group { margin-top: 18px; }
+.res-group .section-label { display: block; margin-bottom: 8px; }
+.res-row { padding: 12px; border-radius: 12px; background: rgba(15,27,42,0.6); border: 1px solid rgba(148,163,184,0.15); border-left-width: 3px; margin-bottom: 8px; }
+.res-row.verdict-eligible { border-left-color: #16A34A; }
+.res-row.verdict-partial { border-left-color: #F59E0B; }
+.res-row.verdict-ineligible { border-left-color: #EF4444; }
+.res-row.verdict-unknown { border-left-color: #64748B; }
+.res-row-main { display: flex; align-items: flex-start; gap: 10px; }
+.method-badge-icon.sm { width: 30px; height: 30px; font-size: 10px; flex: 0 0 auto; }
+.res-row-text { flex: 1; min-width: 0; }
+.res-card-name { display: block; font-size: 14px; font-weight: 700; color: #F1F5F9; }
+.res-reason { display: block; font-size: 12px; color: #94A3B8; line-height: 1.4; margin-top: 2px; }
+.res-row-value { text-align: right; flex: 0 0 auto; }
+.res-value-amt { display: block; font-size: 15px; font-weight: 800; color: #4ADE80; }
+.res-value-amt.text-muted { color: #64748B; }
+.res-conf { font-size: 10px; font-weight: 700; }
+.res-row-actions { display: flex; gap: 14px; margin-top: 8px; padding-left: 40px; }
+.res-why, .res-track { font-size: 12px; font-weight: 700; }
+.res-why { color: #7DD3FC; }
+.res-track { color: #4ADE80; }

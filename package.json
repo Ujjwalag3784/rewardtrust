@@ -10,7 +10,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "test": "node --experimental-strip-types scripts/verify-engine.mjs && node --experimental-strip-types scripts/verify-qr.mjs && node --experimental-strip-types scripts/verify-verification.mjs"
+    "test": "node --experimental-strip-types scripts/verify-engine.mjs && node --experimental-strip-types scripts/verify-qr.mjs && node --experimental-strip-types scripts/verify-verification.mjs && node --experimental-strip-types scripts/verify-wallet.mjs"
   },
   "keywords": [
     "rewardtrust",

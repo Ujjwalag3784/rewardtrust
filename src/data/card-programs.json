@@ -4,40 +4,29 @@
     "cardName": "Kiwi (RuPay Credit Card on UPI)",
     "network": "RuPay",
     "rewardType": "cashback",
-    "rewardUnitNote": "Paid as Kiwi cashback ('Kiwis') redeemable to the linked UPI account.",
-    "source": {
-      "primaryUrl": "https://gokiwi.in/rewards-policy-v2",
-      "helpUrl": "https://gokiwi.in/helpcenter/rewards",
-      "tier": "official",
-      "lastVerified": "2025-05-01",
-      "note": "Kiwi revised reward rates and expanded MCC exclusions effective 1 May 2025."
-    },
+    "rewardUnitNote": "Paid as Kiwi cashback ('Kiwis') to the linked UPI account.",
+    "source": { "primaryUrl": "https://gokiwi.in/rewards-policy-v2", "helpUrl": "https://gokiwi.in/helpcenter/rewards", "tier": "official", "lastVerified": "2025-05-01", "note": "Kiwi revised reward rates and expanded MCC exclusions effective 1 May 2025." },
     "rules": [
-      { "id": "kiwi_upi", "label": "UPI Scan & Pay", "channels": ["upi", "online", "offline"], "match": { "mccNotIn": ["5541","5542","4900","6513","6540","6300","5944","9399","8211"] }, "rate": 0.015, "isHeadline": true, "conditions": ["upi_device_binding"] },
-      { "id": "kiwi_base", "label": "Excluded category (no reward)", "channels": ["upi","online","offline"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
+      { "id": "kiwi_upi", "label": "UPI Scan & Pay", "channels": ["upi","online","offline"], "match": { "mccNotIn": ["5541","5542","4900","6513","6540","6051","6012","6300","5944","9399","8211"] }, "rate": 0.015, "isHeadline": true, "conditions": ["upi_device_binding"], "source": { "url": "https://gokiwi.in/rewards-policy-v2", "title": "Kiwi Rewards Policy", "quote": "1.5% cashback on Scan & Pay UPI transactions.", "lastUpdated": "2025-05-01" } },
+      { "id": "kiwi_base", "label": "Excluded category (no reward)", "channels": ["upi","online","offline"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"], "source": { "url": "https://gokiwi.in/helpcenter/rewards", "title": "Kiwi Help Centre — Rewards", "quote": "Certain merchant categories such as fuel, jewellery, utilities do not qualify for Kiwi rewards.", "lastUpdated": "2025-05-01" } }
     ],
-    "notes": "Kiwi Neon membership offers a higher rate; not modelled here. Excluded MCCs earn zero."
+    "notes": "Kiwi Neon membership offers a higher rate (not modelled). Excluded MCCs earn zero."
   },
   "amazon_pay_icici": {
     "cardId": "amazon_pay_icici",
     "cardName": "Amazon Pay ICICI Bank Credit Card",
     "network": "Visa",
     "rewardType": "amazon_pay_balance",
-    "rewardUnitNote": "Paid as Amazon Pay balance.",
-    "source": {
-      "primaryUrl": "https://www.amazon.in/gp/cobrandcard/marketing.html",
-      "helpUrl": "https://www.icici.bank.in/personal-banking/cards/credit-card/amazon-pay-credit-card",
-      "tier": "official",
-      "lastVerified": "2025-05-15"
-    },
+    "rewardUnitNote": "Paid as Amazon Pay balance (1 reward = ₹1).",
+    "source": { "primaryUrl": "https://www.amazon.in/gp/cobrandcard/marketing.html", "helpUrl": "https://www.icici.bank.in/personal-banking/cards/credit-card/amazon-pay-credit-card", "tier": "official", "lastVerified": "2025-05-15" },
     "rules": [
-      { "id": "apay_amazon_prime", "label": "Amazon.in — Prime member", "channels": ["online"], "match": { "merchants": ["amazon"] }, "rate": 0.05, "isHeadline": true, "requires": "prime", "conditions": ["prime_required"] },
-      { "id": "apay_amazon_nonprime", "label": "Amazon.in — non-Prime", "channels": ["online"], "match": { "merchants": ["amazon"] }, "rate": 0.03, "conditions": ["non_prime_3pct"] },
+      { "id": "apay_amazon_prime", "label": "Amazon.in — Prime member", "channels": ["online"], "match": { "merchants": ["amazon"] }, "rate": 0.05, "isHeadline": true, "requires": "prime", "conditions": ["prime_required"], "source": { "url": "https://www.amazon.in/gp/cobrandcard/marketing.html", "title": "About Amazon Pay ICICI Bank Credit Card", "quote": "5% back for Prime members on Amazon.in.", "lastUpdated": "2025-05-15" } },
+      { "id": "apay_amazon_nonprime", "label": "Amazon.in — non-Prime", "channels": ["online"], "match": { "merchants": ["amazon"] }, "rate": 0.03, "conditions": ["non_prime_3pct"], "source": { "url": "https://www.amazon.in/gp/cobrandcard/marketing.html", "title": "About Amazon Pay ICICI Bank Credit Card", "quote": "3% back for non-Prime members on Amazon.in.", "lastUpdated": "2025-05-15" } },
       { "id": "apay_partners", "label": "Amazon Pay partner merchants", "channels": ["online"], "match": { "merchants": [] }, "rate": 0.02, "conditions": ["partner_merchant"] },
-      { "id": "apay_base", "label": "All other spends", "channels": ["online","offline","upi"], "match": { "mccNotIn": ["5541","5542"] }, "rate": 0.01 },
+      { "id": "apay_base", "label": "All other spends", "channels": ["online","offline","upi"], "match": { "mccNotIn": ["5541","5542"] }, "rate": 0.01, "source": { "url": "https://www.amazon.in/gp/cobrandcard/marketing.html", "title": "About Amazon Pay ICICI Bank Credit Card", "quote": "1% back on all other payments.", "lastUpdated": "2025-05-15" } },
       { "id": "apay_excluded", "label": "Fuel (no reward, surcharge waiver only)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["fuel_no_reward"] }
     ],
-    "notes": "Partner merchant list is dynamic and not populated in this dataset; unmatched merchants earn 1%."
+    "notes": "Amazon Pay partner-merchant list is dynamic and not populated here; unmatched merchants earn 1%."
   },
   "sbi_cashback": {
     "cardId": "sbi_cashback",
@@ -45,15 +34,10 @@
     "network": "Visa",
     "rewardType": "cashback",
     "rewardUnitNote": "Statement cashback.",
-    "source": {
-      "primaryUrl": "https://www.sbicard.com/sbi-card-en/assets/docs/pdf/cashback-revised.pdf",
-      "tier": "official",
-      "lastVerified": "2025-04-20",
-      "note": "Monthly cashback cap has been revised historically (reported ₹5,000 then ₹2,000). Verify current cap before relying on it."
-    },
+    "source": { "primaryUrl": "https://www.sbicard.com/sbi-card-en/assets/docs/pdf/cashback-revised.pdf", "tier": "official", "lastVerified": "2025-04-20", "note": "Monthly cashback cap has been revised historically (reported ₹5,000 then ₹2,000). Verify the current cap." },
     "rules": [
-      { "id": "sbi_online", "label": "Online spends 5%", "channels": ["online"], "match": { "mccNotIn": ["4900","6300","5541","5542","6513","6540","5944","8211","9399"] }, "rate": 0.05, "cap": 5000, "capPeriod": "month", "isHeadline": true, "capNeedsVerification": true },
-      { "id": "sbi_offline", "label": "Offline / other spends 1%", "channels": ["offline","upi"], "match": { "mccNotIn": ["4900","6300","5541","5542","6513","6540","5944","8211","9399"] }, "rate": 0.01 },
+      { "id": "sbi_online", "label": "Online spends 5%", "channels": ["online"], "match": { "mccNotIn": ["4900","6300","5541","5542","6513","6540","6051","6012","5944","8211","9399"] }, "rate": 0.05, "cap": 5000, "capPeriod": "month", "isHeadline": true, "capNeedsVerification": true, "source": { "url": "https://www.sbicard.com/sbi-card-en/assets/docs/pdf/cashback-revised.pdf", "title": "Cashback SBI Card — Revision of Benefits", "quote": "5% cashback on online spends; not applicable on Utility, Insurance, Fuel, Rent, Wallet, Jewellery, School & Merchant EMI (defined by MCC).", "lastUpdated": "2025-04-20" } },
+      { "id": "sbi_offline", "label": "Offline / other spends 1%", "channels": ["offline","upi"], "match": { "mccNotIn": ["4900","6300","5541","5542","6513","6540","6051","6012","5944","8211","9399"] }, "rate": 0.01 },
       { "id": "sbi_excluded", "label": "Excluded MCC (no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
     ],
     "notes": "SBI is reported to use an internal category mapping that can override public MCC definitions — a known source of cashback disputes."
@@ -63,35 +47,102 @@
     "cardName": "Swiggy HDFC Bank Credit Card",
     "network": "Mastercard",
     "rewardType": "cashback",
-    "rewardUnitNote": "Cashback credited as statement credit / Swiggy Money per variant.",
-    "source": {
-      "primaryUrl": "https://www.hdfc.bank.in/personal/pay/cards/credit-cards/swiggy-hdfc-bank-credit-card",
-      "tier": "official",
-      "lastVerified": "2025-02-13"
-    },
+    "rewardUnitNote": "Cashback credited per card terms.",
+    "source": { "primaryUrl": "https://www.hdfc.bank.in/personal/pay/cards/credit-cards/swiggy-hdfc-bank-credit-card", "tier": "official", "lastVerified": "2025-02-13" },
     "rules": [
-      { "id": "hdfc_swiggy_app", "label": "Swiggy app (food, Instamart, Dineout) 10%", "channels": ["online"], "match": { "merchants": ["swiggy"] }, "rate": 0.10, "isHeadline": true, "conditions": ["swiggy_app_only"] },
-      { "id": "hdfc_online", "label": "Online spends 5%", "channels": ["online"], "match": { "mccNotIn": ["5262","6513","4900","5541","5542","6300","5944","9399"] }, "rate": 0.05, "cap": 1500, "capPeriod": "month", "isHeadline": true },
+      { "id": "hdfc_swiggy_app", "label": "Swiggy app (food, Instamart, Dineout) 10%", "channels": ["online"], "match": { "merchants": ["swiggy"] }, "rate": 0.10, "isHeadline": true, "conditions": ["swiggy_app_only"], "source": { "url": "https://www.hdfc.bank.in/personal/pay/cards/credit-cards/swiggy-hdfc-bank-credit-card", "title": "Swiggy HDFC Bank Credit Card", "quote": "10% cashback on Swiggy app spends.", "lastUpdated": "2025-02-13" } },
+      { "id": "hdfc_online", "label": "Online spends 5%", "channels": ["online"], "match": { "mccNotIn": ["5262","6513","4900","5541","5542","6300","5944","9399","6540","6051","6012"] }, "rate": 0.05, "cap": 1500, "capPeriod": "month", "isHeadline": true, "source": { "url": "https://www.hdfc.bank.in/personal/pay/cards/credit-cards/swiggy-hdfc-bank-credit-card", "title": "Swiggy HDFC Bank Credit Card", "quote": "5% cashback on online spends (MCC-based; capped ₹1,500 per statement cycle).", "lastUpdated": "2025-02-13" } },
       { "id": "hdfc_base", "label": "All other categories 1%", "channels": ["online","offline","upi"], "match": {}, "rate": 0.01 }
     ],
-    "notes": "The 5% online tier is MCC-based. Amazon settles as MCC 5262 (Marketplaces), which is excluded from 5% — so Amazon earns only the 1% base rate."
+    "notes": "The 5% online tier is MCC-based. Amazon settles as MCC 5262 (Marketplaces), excluded from 5% — so Amazon earns only the 1% base rate."
   },
   "cred": {
     "cardId": "cred",
     "cardName": "CRED (UPI / RuPay Credit Card)",
     "network": "RuPay",
     "rewardType": "points",
-    "rewardUnitNote": "Rewards accrue as CRED Coins / CRED reward points, not direct cash; redemption value varies.",
-    "source": {
-      "primaryUrl": "https://cred.club/terms",
-      "tier": "official",
-      "lastVerified": "2026-06-29",
-      "note": "CRED Coins are loyalty points earned primarily on credit-card bill payments; UPI/scan-and-pay reward rates vary and are approximate."
-    },
+    "rewardUnitNote": "Rewards accrue as CRED Coins / points, not direct cash; redemption value varies.",
+    "pointValueInr": 0.1,
+    "source": { "primaryUrl": "https://cred.club/terms", "tier": "official", "lastVerified": "2026-06-29", "note": "CRED Coins are loyalty points; UPI/scan-and-pay reward rates vary and are approximate." },
     "rules": [
-      { "id": "cred_upi", "label": "UPI / online spends (as CRED Coins)", "channels": ["upi","online"], "match": { "mccNotIn": ["5541","5542","4900","6513","6540","6300","5944"] }, "rate": 0.01, "isHeadline": true, "conditions": ["cred_coins_only"] },
+      { "id": "cred_upi", "label": "UPI / online spends (CRED Coins)", "channels": ["upi","online"], "match": { "mccNotIn": ["5541","5542","4900","6513","6540","6051","6012","6300","5944"] }, "rate": 0.01, "pointsPerRupee": 0.1, "isHeadline": true, "conditions": ["cred_coins_only"], "source": { "url": "https://cred.club/terms", "title": "CRED Terms & Conditions", "quote": "Users earn CRED Coins / reward points on eligible spends via the CRED app.", "lastUpdated": "2026-06-29" } },
       { "id": "cred_excluded", "label": "Excluded MCC (no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
     ],
     "notes": "Reward currency is CRED Coins, whose cash-equivalent value is variable — confidence is intentionally modest."
+  },
+  "flipkart_axis": {
+    "cardId": "flipkart_axis",
+    "cardName": "Flipkart Axis Bank Credit Card",
+    "network": "Visa",
+    "rewardType": "cashback",
+    "rewardUnitNote": "Cashback credited to the card.",
+    "source": { "primaryUrl": "https://www.flipkart.com/pages/axis-offer-tnc", "helpUrl": "https://www.flipkart.com/pages/cbc-cashback-1", "tier": "official", "lastVerified": "2025-03-01" },
+    "rules": [
+      { "id": "fka_flipkart", "label": "Flipkart & Cleartrip 5%", "channels": ["online"], "match": { "merchants": ["flipkart","cleartrip"] }, "rate": 0.05, "isHeadline": true, "source": { "url": "https://www.flipkart.com/pages/axis-bank-credit-card", "title": "Flipkart Axis Bank Credit Card — Benefits", "quote": "5% cashback on Flipkart and Cleartrip.", "lastUpdated": "2025-03-01" } },
+      { "id": "fka_partners", "label": "Preferred partners 4% (Swiggy, Uber, PVR, cult.fit)", "channels": ["online"], "match": { "merchants": ["swiggy","uber","cultfit"] }, "rate": 0.04, "source": { "url": "https://www.flipkart.com/pages/axis-bank-credit-card", "title": "Flipkart Axis Bank Credit Card — Benefits", "quote": "4% unlimited cashback on Swiggy, Uber, PVR and cult.fit.", "lastUpdated": "2025-03-01" } },
+      { "id": "fka_base", "label": "All other spends 1.5%", "channels": ["online","offline","upi"], "match": { "mccNotIn": ["5541","5542","6540","6051","6012"] }, "rate": 0.015, "source": { "url": "https://www.flipkart.com/pages/cbc-cashback-1", "title": "Flipkart Axis — 1.5% unlimited cashback", "quote": "1.5% unlimited cashback on all other spends; not eligible on fuel, wallet loads, gift cards, EMI.", "lastUpdated": "2025-03-01" } },
+      { "id": "fka_excluded", "label": "Fuel / wallet (no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
+    ],
+    "notes": "Cashback not eligible on fuel spends, wallet loads, gift-card purchases, and EMI per official proposition terms."
+  },
+  "axis_ace": {
+    "cardId": "axis_ace",
+    "cardName": "Axis Bank ACE Credit Card",
+    "network": "Visa",
+    "rewardType": "cashback",
+    "rewardUnitNote": "Cashback credited to the card.",
+    "source": { "primaryUrl": "https://www.axisbank.com/retail/cards/credit-card/ace-credit-card", "tier": "official", "lastVerified": "2025-05-19", "note": "5% on bill payments applies only via Google Pay (channel-specific, not modelled here)." },
+    "rules": [
+      { "id": "ace_partners", "label": "Swiggy / Zomato / Ola 4%", "channels": ["online"], "match": { "merchants": ["swiggy","zomato","ola"] }, "rate": 0.04, "cap": 500, "capPeriod": "month", "isHeadline": true, "source": { "url": "https://www.axisbank.com/retail/cards/credit-card/ace-credit-card", "title": "Axis Bank ACE Credit Card", "quote": "4% cashback on Swiggy, Zomato and Ola; 5%+4% categories share a ₹500/month cap.", "lastUpdated": "2025-05-19" } },
+      { "id": "ace_base", "label": "All other spends 2%", "channels": ["online","offline","upi"], "match": { "mccNotIn": ["5541","5542","6051","6012","6540"] }, "rate": 0.02, "source": { "url": "https://www.axisbank.com/retail/cards/credit-card/ace-credit-card", "title": "Axis Bank ACE Credit Card", "quote": "2% cashback on all other spends.", "lastUpdated": "2025-05-19" } },
+      { "id": "ace_excluded", "label": "Fuel / wallet / financial (MCC 5541, 6051, 6012 — no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"], "source": { "url": "https://www.axisbank.com/retail/cards/credit-card/ace-credit-card", "title": "Axis ACE T&C — excluded MCCs", "quote": "MCCs 5541 (fuel), 6051 (quasi-cash/wallet) and 6012 (financial) are excluded from cashback. [Verify against Axis T&C PDF]", "lastUpdated": "2025-05-19" } }
+    ],
+    "notes": "5% cashback on utility/telecom bill payments applies only when paid via Google Pay — a channel we do not yet detect, so it is not claimed here."
+  },
+  "hdfc_millennia": {
+    "cardId": "hdfc_millennia",
+    "cardName": "HDFC Bank Millennia Credit Card",
+    "network": "Visa/Mastercard",
+    "rewardType": "cashback",
+    "rewardUnitNote": "Earned as CashPoints (1 CashPoint = ₹1 towards statement cashback).",
+    "source": { "primaryUrl": "https://www.hdfc.bank.in/personal/pay/cards/credit-cards/millennia-cards", "tier": "official", "lastVerified": "2026-02-06" },
+    "rules": [
+      { "id": "mil_partners", "label": "5% on 10 online partners", "channels": ["online"], "match": { "merchants": ["amazon","flipkart","swiggy","zomato","myntra","uber","cultfit","bookmyshow","tatacliq"] }, "rate": 0.05, "cap": 1000, "capPeriod": "month", "isHeadline": true, "source": { "url": "https://www.hdfc.bank.in/personal/pay/cards/credit-cards/millennia-cards", "title": "HDFC Bank Millennia Credit Card", "quote": "5% CashBack on Amazon, Flipkart, Swiggy, Zomato, Myntra, Uber, cult.fit, BookMyShow, Sony LIV, Tata CLiQ.", "lastUpdated": "2026-02-06" } },
+      { "id": "mil_base", "label": "1% on other spends", "channels": ["online","offline","upi"], "match": { "mccNotIn": ["5541","5542","6513","6540","6051","6012","9399"] }, "rate": 0.01, "source": { "url": "https://www.hdfc.bank.in/htdocs/common/pdf/faq-millennia.pdf", "title": "Millennia FAQ", "quote": "1% CashBack on other spends except Fuel, EMI, Wallet, Rent Payments and Govt Related transactions.", "lastUpdated": "2026-02-06" } },
+      { "id": "mil_excluded", "label": "Fuel / EMI / wallet / rent / govt (no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
+    ],
+    "notes": "CashPoints on the 5% tier are capped at 1,000 per month and redeemable 1 CashPoint = ₹1 for statement cashback."
+  },
+  "idfc_first_millennia": {
+    "cardId": "idfc_first_millennia",
+    "cardName": "IDFC FIRST Millennia Credit Card",
+    "network": "Visa/RuPay",
+    "rewardType": "points",
+    "rewardUnitNote": "Reward Points; 1 RP ≈ ₹0.25 on redemption. Points never expire.",
+    "pointValueInr": 0.25,
+    "source": { "primaryUrl": "https://www.idfcfirstbank.com/credit-card/millennia", "tier": "official", "lastVerified": "2025-03-10", "note": "Multiplier bands and category exclusions are simplified; verify exact bands against IDFC FIRST T&C." },
+    "rules": [
+      { "id": "idfc_online", "label": "Online spends 3X points (≤ ₹20k/mo)", "channels": ["online"], "match": { "mccNotIn": ["5541","5542","6513","6540","6051","6012","9399"] }, "rate": 0.005, "pointsPerRupee": 0.02, "isHeadline": true, "source": { "url": "https://www.idfcfirstbank.com/credit-card/millennia", "title": "FIRST Millennia Credit Card — Benefits", "quote": "3X reward points on online spends for spends up to ₹20,000 per month.", "lastUpdated": "2025-03-10" } },
+      { "id": "idfc_base", "label": "Offline / other spends 1X points", "channels": ["offline","upi"], "match": { "mccNotIn": ["5541","5542","6513","6540","6051","6012","9399"] }, "rate": 0.00167, "pointsPerRupee": 0.0067 },
+      { "id": "idfc_excluded", "label": "Fuel / rent / wallet / govt (no reward)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["exclusions_mcc"] }
+    ],
+    "notes": "Reward-point value is an estimate (₹0.25/point). Incremental spends above ₹20k/month may earn a higher multiplier — not modelled."
+  },
+  "sbi_simplyclick": {
+    "cardId": "sbi_simplyclick",
+    "cardName": "SimplyCLICK SBI Credit Card",
+    "network": "Visa/Mastercard",
+    "rewardType": "points",
+    "rewardUnitNote": "Reward Points; 1 RP ≈ ₹0.25. ₹500 Amazon voucher as welcome benefit.",
+    "pointValueInr": 0.25,
+    "welcomeBenefit": "₹500 Amazon.in gift voucher on fee payment (one-time).",
+    "source": { "primaryUrl": "https://www.sbicard.com/en/personal/credit-cards/shopping/simplyclick-sbi-card.page", "helpUrl": "https://www.sbicard.com/sbi-card-en/assets/docs/pdf/SimplyClick-TnC.pdf", "tier": "official", "lastVerified": "2025-04-20" },
+    "rules": [
+      { "id": "sc_partners", "label": "10X points at online partners", "channels": ["online"], "match": { "merchants": ["amazon","bookmyshow","cleartrip","apollo247","myntra"] }, "rate": 0.025, "pointsPerRupee": 0.1, "isHeadline": true, "source": { "url": "https://www.sbicard.com/en/personal/credit-cards/shopping/simplyclick-sbi-card.page", "title": "SimplyCLICK SBI Card — Benefits", "quote": "Earn 10X Reward Points on online spends with exclusive partners.", "lastUpdated": "2025-04-20" } },
+      { "id": "sc_online", "label": "5X points on other online spends", "channels": ["online"], "match": { "mccNotIn": ["5541","5542","4900","6513","6540","6051","6012","9399"] }, "rate": 0.0125, "pointsPerRupee": 0.05, "cap": 2500, "capPeriod": "month", "source": { "url": "https://www.sbicard.com/sbi-card-en/assets/docs/pdf/SimplyClick-TnC.pdf", "title": "SimplyCLICK T&C — Reward Points", "quote": "5X Reward Points on all online spends other than exclusive partners, capped at 10,000 Reward Points per calendar month.", "lastUpdated": "2025-04-20" } },
+      { "id": "sc_base", "label": "1 point / ₹100 on other spends", "channels": ["offline","upi"], "match": { "mccNotIn": ["5541","5542"] }, "rate": 0.0025, "pointsPerRupee": 0.01 },
+      { "id": "sc_excluded", "label": "Fuel (no reward, surcharge waiver only)", "channels": ["online","offline","upi"], "match": {}, "rate": 0, "conditions": ["fuel_no_reward"] }
+    ],
+    "notes": "5X points cap is 10,000 RP/month (≈ ₹2,500 value). Point value is an estimate (₹0.25/point)."
   }
 }

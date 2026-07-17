@@ -6,7 +6,6 @@
     "category": "Shopping",
     "mcc": "5262",
     "mccConfidence": "high",
-    "mccNote": "Amazon.in commonly settles as MCC 5262 (Marketplaces). Several cards exclude 5262 from their headline online reward.",
     "vpaPatterns": [
       "amazon"
     ],
@@ -15,13 +14,54 @@
     "accentColor": "#FF9900"
   },
   {
+    "id": "flipkart",
+    "name": "Flipkart",
+    "fullName": "Flipkart",
+    "category": "Shopping",
+    "mcc": "5262",
+    "mccConfidence": "medium",
+    "vpaPatterns": [
+      "flipkart"
+    ],
+    "logo": null,
+    "icon": "🛒",
+    "accentColor": "#2874F0"
+  },
+  {
+    "id": "myntra",
+    "name": "Myntra",
+    "fullName": "Myntra Fashion",
+    "category": "Apparel",
+    "mcc": "5651",
+    "mccConfidence": "medium",
+    "vpaPatterns": [
+      "myntra"
+    ],
+    "logo": null,
+    "icon": "👗",
+    "accentColor": "#FF3F6C"
+  },
+  {
+    "id": "tatacliq",
+    "name": "Tata CLiQ",
+    "fullName": "Tata CLiQ",
+    "category": "Shopping",
+    "mcc": "5399",
+    "mccConfidence": "low",
+    "vpaPatterns": [
+      "tatacliq"
+    ],
+    "logo": null,
+    "icon": "🛍️",
+    "accentColor": "#da1884"
+  },
+  {
     "id": "swiggy",
     "name": "Swiggy",
     "fullName": "Swiggy Food & Instamart",
     "category": "Food Delivery",
     "mcc": "5814",
     "mccConfidence": "medium",
-    "mccNote": "Food delivery typically settles as MCC 5814 (Fast Food). Instamart orders may settle differently.",
     "vpaPatterns": [
       "swiggy"
     ],
@@ -32,11 +72,10 @@
   {
     "id": "zomato",
     "name": "Zomato",
-    "fullName": "Zomato Delivery",
+    "fullName": "Zomato",
     "category": "Food Delivery",
     "mcc": "5814",
     "mccConfidence": "medium",
-    "mccNote": "Food delivery typically settles as MCC 5814 (Fast Food).",
     "vpaPatterns": [
       "zomato"
     ],
@@ -51,7 +90,6 @@
     "category": "Groceries",
     "mcc": "5411",
     "mccConfidence": "medium",
-    "mccNote": "Quick-commerce grocery typically settles as MCC 5411 (Grocery Stores).",
     "vpaPatterns": [
       "blinkit",
       "grofers"
@@ -63,11 +101,10 @@
   {
     "id": "zepto",
     "name": "Zepto",
-    "fullName": "Zepto Delivery",
+    "fullName": "Zepto",
     "category": "Groceries",
     "mcc": "5411",
     "mccConfidence": "medium",
-    "mccNote": "Quick-commerce grocery typically settles as MCC 5411 (Grocery Stores).",
     "vpaPatterns": [
       "zeptonow",
       "zepto"
@@ -83,7 +120,6 @@
     "category": "Dining & Café",
     "mcc": "5814",
     "mccConfidence": "medium",
-    "mccNote": "Café / QSR typically settles as MCC 5814 (Fast Food); some outlets use 5812 (Restaurants).",
     "vpaPatterns": [
       "starbucks",
       "tatastarbucks"
@@ -91,5 +127,152 @@
     "logo": "/logos/starbucks.svg",
     "icon": "💚",
     "accentColor": "#00704A"
+  },
+  {
+    "id": "uber",
+    "name": "Uber",
+    "fullName": "Uber",
+    "category": "Transport",
+    "mcc": "4121",
+    "mccConfidence": "medium",
+    "vpaPatterns": [
+      "uber"
+    ],
+    "logo": null,
+    "icon": "🚗",
+    "accentColor": "#000000"
+  },
+  {
+    "id": "ola",
+    "name": "Ola",
+    "fullName": "Ola Cabs",
+    "category": "Transport",
+    "mcc": "4121",
+    "mccConfidence": "low",
+    "vpaPatterns": [
+      "olacabs",
+      "ola"
+    ],
+    "logo": null,
+    "icon": "🚕",
+    "accentColor": "#4DB45E"
+  },
+  {
+    "id": "bookmyshow",
+    "name": "BookMyShow",
+    "fullName": "BookMyShow",
+    "category": "Entertainment",
+    "mcc": "7832",
+    "mccConfidence": "medium",
+    "vpaPatterns": [
+      "bookmyshow",
+      "bms"
+    ],
+    "logo": null,
+    "icon": "🎬",
+    "accentColor": "#C4242B"
+  },
+  {
+    "id": "cultfit",
+    "name": "cult.fit",
+    "fullName": "cult.fit",
+    "category": "Fitness",
+    "mcc": "7997",
+    "mccConfidence": "low",
+    "vpaPatterns": [
+      "cultfit",
+      "curefit"
+    ],
+    "logo": null,
+    "icon": "🏋️",
+    "accentColor": "#20242B"
+  },
+  {
+    "id": "cleartrip",
+    "name": "Cleartrip",
+    "fullName": "Cleartrip Travel",
+    "category": "Travel",
+    "mcc": "4722",
+    "mccConfidence": "medium",
+    "vpaPatterns": [
+      "cleartrip"
+    ],
+    "logo": null,
+    "icon": "✈️",
+    "accentColor": "#F47B20"
+  },
+  {
+    "id": "apollo247",
+    "name": "Apollo 24|7",
+    "fullName": "Apollo 24/7 Pharmacy",
+    "category": "Health",
+    "mcc": "5912",
+    "mccConfidence": "low",
+    "vpaPatterns": [
+      "apollo"
+    ],
+    "logo": null,
+    "icon": "💊",
+    "accentColor": "#12A54A"
+  },
+  {
+    "id": "indianoil",
+    "name": "Indian Oil",
+    "fullName": "Indian Oil Fuel Station",
+    "category": "Fuel",
+    "mcc": "5541",
+    "mccConfidence": "high",
+    "vpaPatterns": [
+      "indianoil",
+      "iocl"
+    ],
+    "logo": null,
+    "icon": "⛽",
+    "accentColor": "#F58220"
+  },
+  {
+    "id": "electricity",
+    "name": "Electricity Bill",
+    "fullName": "State Electricity Board",
+    "category": "Utilities",
+    "mcc": "4900",
+    "mccConfidence": "high",
+    "vpaPatterns": [
+      "bescom",
+      "electricity"
+    ],
+    "logo": null,
+    "icon": "💡",
+    "accentColor": "#EAB308"
+  },
+  {
+    "id": "rent",
+    "name": "Rent Payment",
+    "fullName": "Rent (via aggregator)",
+    "category": "Rent",
+    "mcc": "6513",
+    "mccConfidence": "high",
+    "vpaPatterns": [
+      "nobroker",
+      "rent"
+    ],
+    "logo": null,
+    "icon": "🏠",
+    "accentColor": "#64748B"
+  },
+  {
+    "id": "walletload",
+    "name": "Wallet Load",
+    "fullName": "Prepaid Wallet Top-up",
+    "category": "Wallet Load",
+    "mcc": "6540",
+    "mccConfidence": "high",
+    "vpaPatterns": [
+      "wallet",
+      "paytmwallet"
+    ],
+    "logo": null,
+    "icon": "👛",
+    "accentColor": "#00BAF2"
   }
 ]

@@ -48,6 +48,15 @@ export interface Rule {
   isHeadline?: boolean;
   requires?: 'prime' | string;
   conditions?: string[];
+  pointsPerRupee?: number;
+  source?: RuleSource;
+}
+
+export interface RuleSource {
+  url?: string;
+  title?: string;
+  quote?: string;
+  lastUpdated?: string;
 }
 
 export interface ProgramSource {
@@ -67,6 +76,8 @@ export interface CardProgram {
   source?: ProgramSource;
   rules?: Rule[];
   notes?: string;
+  pointValueInr?: number;
+  welcomeBenefit?: string;
 }
 export type CardPrograms = Record<string, CardProgram>;
 
@@ -100,10 +111,16 @@ export interface EligibilityResult {
     tier?: SourceTier;
     lastVerified?: string;
     note?: string;
+    title?: string;
+    quote?: string;
+    lastUpdated?: string;
   };
   notes?: string;
+  welcomeBenefit?: string;
   verdict: Verdict;
   rewardAmount: number;
+  rewardValueInr: number;
+  rewardPoints?: number | null;
   effectiveRate: number;
   appliedRule: { id: string; label: string; rate: number } | null;
   mcc: string | null;

@@ -100,9 +100,28 @@ function computeConfidence({ program, merchant, verdict, today, corroboration }:
 }
 
 function formatReward(amount: number, rewardType?: RewardType): string {
-  if (rewardType === 'points') return `≈ ${amount} in CRED reward points`;
+  if (rewardType === 'points') return `≈ ${amount} in reward points`;
   if (rewardType === 'amazon_pay_balance') return `₹${amount} in Amazon Pay balance`;
   return `₹${amount} cashback`;
+}
+
+function mergeSource(program: CardProgram, rule?: Rule | null) {
+  const base = {
+    url: program?.source?.primaryUrl,
+    tier: program?.source?.tier,
+    lastVerified: program?.source?.lastVerified,
+    note: program?.source?.note,
+  };
+  if (rule && rule.source) {
+    return {
+      ...base,
+      url: rule.source.url || base.url,
+      title: rule.source.title,
+      quote: rule.source.quote,
+      lastUpdated: rule.source.lastUpdated,
+    };
+  }
+  return base;
 }
 
 export default function evaluateEligibility({
@@ -127,7 +146,10 @@ export default function evaluateEligibility({
       note: program?.source?.note,
     },
     notes: program?.notes,
+    welcomeBenefit: program?.welcomeBenefit,
   };
+
+  const pointValueInr = program?.pointValueInr;
 
   if (!merchant || !merchant.mcc) {
     const confidence = computeConfidence({ program, merchant: merchant || {}, verdict: 'unknown', today, corroboration });
@@ -135,6 +157,8 @@ export default function evaluateEligibility({
       ...cardMeta,
       verdict: 'unknown',
       rewardAmount: 0,
+      rewardValueInr: 0,
+      rewardPoints: null,
       effectiveRate: 0,
       appliedRule: null,
       mcc: null,
@@ -165,8 +189,11 @@ export default function evaluateEligibility({
     const confidence = computeConfidence({ program, merchant, verdict: 'ineligible', today, corroboration });
     return {
       ...cardMeta,
+      source: mergeSource(program, winner),
       verdict: 'ineligible',
       rewardAmount: 0,
+      rewardValueInr: 0,
+      rewardPoints: null,
       effectiveRate: 0,
       appliedRule: winner ? { id: winner.id, label: winner.label, rate: 0 } : null,
       mcc,
@@ -214,11 +241,19 @@ export default function evaluateEligibility({
   }
 
   const confidence = computeConfidence({ program, merchant, verdict, today, corroboration });
+  const rewardValueInr = rewardAmount;
+  const rewardPoints =
+    winner.pointsPerRupee != null
+      ? Math.round((pointValueInr ? rewardValueInr / pointValueInr : amount * winner.pointsPerRupee))
+      : null;
 
   return {
     ...cardMeta,
+    source: mergeSource(program, winner),
     verdict,
     rewardAmount,
+    rewardValueInr,
+    rewardPoints,
     effectiveRate: rate,
     appliedRule: { id: winner.id, label: winner.label, rate },
     mcc,

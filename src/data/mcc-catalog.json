@@ -1,17 +1,127 @@
 {
-  "5262": { "mcc": "5262", "label": "Marketplaces / Aggregators", "friendlyCategory": "Online Marketplace" },
-  "5399": { "mcc": "5399", "label": "General Merchandise", "friendlyCategory": "Shopping" },
-  "5411": { "mcc": "5411", "label": "Grocery Stores & Supermarkets", "friendlyCategory": "Groceries" },
-  "5499": { "mcc": "5499", "label": "Misc. Food Stores / Convenience", "friendlyCategory": "Groceries" },
-  "5812": { "mcc": "5812", "label": "Eating Places & Restaurants", "friendlyCategory": "Dining" },
-  "5814": { "mcc": "5814", "label": "Fast Food Restaurants", "friendlyCategory": "Food Delivery / Café" },
-  "5541": { "mcc": "5541", "label": "Service Stations (Fuel)", "friendlyCategory": "Fuel" },
-  "5542": { "mcc": "5542", "label": "Automated Fuel Dispensers", "friendlyCategory": "Fuel" },
-  "4900": { "mcc": "4900", "label": "Utilities (Electric, Gas, Water)", "friendlyCategory": "Utilities" },
-  "6513": { "mcc": "6513", "label": "Real Estate Agents / Rent", "friendlyCategory": "Rent" },
-  "6540": { "mcc": "6540", "label": "Non-Financial Institutions / Wallet Loads", "friendlyCategory": "Wallet Load" },
-  "6300": { "mcc": "6300", "label": "Insurance", "friendlyCategory": "Insurance" },
-  "5944": { "mcc": "5944", "label": "Jewellery, Watches & Precious Stones", "friendlyCategory": "Jewellery" },
-  "9399": { "mcc": "9399", "label": "Government Services", "friendlyCategory": "Government" },
-  "8211": { "mcc": "8211", "label": "Schools & Educational Services", "friendlyCategory": "Education" }
+  "5262": {
+    "mcc": "5262",
+    "label": "Marketplaces / Aggregators",
+    "friendlyCategory": "Online Marketplace"
+  },
+  "5399": {
+    "mcc": "5399",
+    "label": "General Merchandise",
+    "friendlyCategory": "Shopping"
+  },
+  "5411": {
+    "mcc": "5411",
+    "label": "Grocery Stores & Supermarkets",
+    "friendlyCategory": "Groceries"
+  },
+  "5499": {
+    "mcc": "5499",
+    "label": "Misc. Food Stores / Convenience",
+    "friendlyCategory": "Groceries"
+  },
+  "5812": {
+    "mcc": "5812",
+    "label": "Eating Places & Restaurants",
+    "friendlyCategory": "Dining"
+  },
+  "5814": {
+    "mcc": "5814",
+    "label": "Fast Food Restaurants",
+    "friendlyCategory": "Food Delivery / Café"
+  },
+  "5541": {
+    "mcc": "5541",
+    "label": "Service Stations (Fuel)",
+    "friendlyCategory": "Fuel"
+  },
+  "5542": {
+    "mcc": "5542",
+    "label": "Automated Fuel Dispensers",
+    "friendlyCategory": "Fuel"
+  },
+  "4900": {
+    "mcc": "4900",
+    "label": "Utilities (Electric, Gas, Water)",
+    "friendlyCategory": "Utilities"
+  },
+  "6513": {
+    "mcc": "6513",
+    "label": "Real Estate Agents / Rent",
+    "friendlyCategory": "Rent"
+  },
+  "6540": {
+    "mcc": "6540",
+    "label": "Non-Financial Institutions / Wallet Loads",
+    "friendlyCategory": "Wallet Load"
+  },
+  "6300": {
+    "mcc": "6300",
+    "label": "Insurance",
+    "friendlyCategory": "Insurance"
+  },
+  "5944": {
+    "mcc": "5944",
+    "label": "Jewellery, Watches & Precious Stones",
+    "friendlyCategory": "Jewellery"
+  },
+  "9399": {
+    "mcc": "9399",
+    "label": "Government Services",
+    "friendlyCategory": "Government"
+  },
+  "8211": {
+    "mcc": "8211",
+    "label": "Schools & Educational Services",
+    "friendlyCategory": "Education"
+  },
+  "6012": {
+    "mcc": "6012",
+    "label": "Financial Institutions / Quasi-cash",
+    "friendlyCategory": "Financial"
+  },
+  "6051": {
+    "mcc": "6051",
+    "label": "Quasi-cash / Wallet & Crypto loads",
+    "friendlyCategory": "Wallet Load"
+  },
+  "4814": {
+    "mcc": "4814",
+    "label": "Telecom / Recharge",
+    "friendlyCategory": "Recharge"
+  },
+  "4899": {
+    "mcc": "4899",
+    "label": "Cable & Streaming Services",
+    "friendlyCategory": "Entertainment"
+  },
+  "4121": {
+    "mcc": "4121",
+    "label": "Taxis & Ride-hailing",
+    "friendlyCategory": "Transport"
+  },
+  "7832": {
+    "mcc": "7832",
+    "label": "Cinemas",
+    "friendlyCategory": "Entertainment"
+  },
+  "4722": {
+    "mcc": "4722",
+    "label": "Travel Agencies",
+    "friendlyCategory": "Travel"
+  },
+  "5912": {
+    "mcc": "5912",
+    "label": "Pharmacies & Drug Stores",
+    "friendlyCategory": "Health"
+  },
+  "5651": {
+    "mcc": "5651",
+    "label": "Family Clothing Stores",
+    "friendlyCategory": "Apparel"
+  },
+  "7997": {
+    "mcc": "7997",
+    "label": "Health Clubs & Gyms",
+    "friendlyCategory": "Fitness"
+  }
 }

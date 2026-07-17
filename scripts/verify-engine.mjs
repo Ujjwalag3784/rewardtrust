@@ -70,6 +70,29 @@ const r7 = evaluateEligibility({ amount: 1000, merchant: merchant('blinkit'), pr
 check('CRED rewardType = points', r7.rewardType, 'points');
 console.log(`      reason: ${r7.reason}\n`);
 
+// 8b. New cards (10-card dataset) + reward valuation.
+const fk = evaluateEligibility({ amount: 2000, merchant: merchant('flipkart'), program: programs.flipkart_axis, mccCatalog, today: TODAY });
+check('Flipkart x Flipkart-Axis verdict = eligible', fk.verdict, 'eligible');
+check('Flipkart x Flipkart-Axis rate = 5%', fk.effectiveRate, 0.05);
+
+const mil = evaluateEligibility({ amount: 1000, merchant: merchant('amazon'), program: programs.hdfc_millennia, mccCatalog, today: TODAY });
+check('Amazon x HDFC Millennia = eligible 5% partner', mil.verdict, 'eligible');
+check('Amazon x HDFC Millennia rate = 5%', mil.effectiveRate, 0.05);
+
+const sc = evaluateEligibility({ amount: 1000, merchant: merchant('amazon'), program: programs.sbi_simplyclick, mccCatalog, today: TODAY });
+check('SimplyCLICK Amazon rewardType = points', sc.rewardType, 'points');
+check('SimplyCLICK Amazon has reward points', sc.rewardPoints > 0, true);
+check('SimplyCLICK Amazon has rupee value', sc.rewardValueInr > 0, true);
+console.log(`      SimplyCLICK: ${sc.rewardPoints} pts (~₹${sc.rewardValueInr}) — ${sc.reason}`);
+
+const fuel = evaluateEligibility({ amount: 1000, merchant: merchant('indianoil'), program: programs.sbi_cashback, mccCatalog, today: TODAY });
+check('Fuel (MCC 5541) x SBI = ineligible', fuel.verdict, 'ineligible');
+check('Fuel x SBI reward = 0', fuel.rewardAmount, 0);
+console.log(`      ${fuel.reason}`);
+
+const aceMcc = evaluateEligibility({ amount: 1000, merchant: merchant('walletload'), program: programs.axis_ace, mccCatalog, today: TODAY });
+check('Wallet load (6540) x Axis ACE = ineligible', aceMcc.verdict, 'ineligible');
+
 // 8. Confidence is computed (not hardcoded) and within band.
 console.log(`      HDFC confidence: ${r1.confidence.score}/100 (${r1.confidence.band}) — ${r1.confidence.basis}`);
 check('Confidence is a number 5..99', r1.confidence.score >= 5 && r1.confidence.score <= 99, true);
