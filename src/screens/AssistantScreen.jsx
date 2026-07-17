@@ -107,7 +107,7 @@ export default function AssistantScreen({ walletIds, cards, isPrime, onShowTrust
           </div>
         </div>
 
-        {ocrNote && <div className="assistant-note">{ocrNote}</div>}
+        {(busy || ocrNote) && <div className="assistant-note">{busy && <span className="rt-spinner" />} {ocrNote || 'Reading receipt…'}</div>}
 
         <div className="qr-sample-row assistant-suggestions">
           {SUGGESTIONS.map((s) => (

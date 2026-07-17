@@ -112,6 +112,7 @@ export default function QrScanner({ merchants, mccCatalog, onAnalyzed, onBack })
         {cameraOn ? (
           <div className="qr-camera-wrap">
             <div id={READER_ID} className="qr-reader" />
+            <div className="assistant-note"><span className="rt-spinner" /> Point your camera at a UPI QR code…</div>
             <button className="btn-secondary" onClick={() => setCameraOn(false)}>Stop camera</button>
           </div>
         ) : (

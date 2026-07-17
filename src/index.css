@@ -55,7 +55,7 @@ body {
 .mobile-frame-wrapper {
   width: 100%;
   max-width: 412px;
-  height: 844px;
+  height: min(880px, calc(100dvh - 40px));
   background-color: var(--bg-app);
   border-radius: 40px;
   border: 10px solid #1E293B;
@@ -90,8 +90,11 @@ body {
 /* Scrollable main view */
 .main-content-viewport {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
-  padding: 16px 20px 80px 20px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 16px 20px 24px 20px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -158,7 +161,7 @@ body {
 .screen-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  min-height: 100%;
 }
 
 .section-container {
@@ -2171,3 +2174,117 @@ input:focus-visible,
 .diag-icon { font-size: 14px; }
 .diag-label { display: block; font-size: 13px; font-weight: 700; color: #F1F5F9; }
 .diag-detail { display: block; font-size: 12px; color: #94A3B8; line-height: 1.45; margin-top: 2px; }
+
+/* ============================================================
+   Phase 9 — Premium design system, responsiveness & motion
+   ============================================================ */
+:root {
+  /* spacing scale (4pt) */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px; --sp-8: 32px;
+  /* radii */
+  --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 22px; --r-pill: 999px;
+  /* elevation */
+  --shadow-1: 0 1px 2px rgba(0,0,0,0.25);
+  --shadow-2: 0 6px 18px -6px rgba(0,0,0,0.45);
+  --shadow-3: 0 18px 40px -12px rgba(0,0,0,0.55);
+  --shadow-glow: 0 0 0 1px rgba(16,185,129,0.25), 0 10px 30px -10px rgba(16,185,129,0.35);
+  /* motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 140ms; --dur-2: 240ms; --dur-3: 420ms;
+}
+
+/* ---- Responsive: become a real full-screen app on phones ---- */
+@media (max-width: 480px) {
+  body { display: block; overflow-x: hidden; }
+  .app-shell-backdrop { padding: 0; display: block; }
+  .mobile-frame-wrapper {
+    max-width: 100%;
+    height: 100dvh;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .app-brand-header { padding-top: calc(12px + env(safe-area-inset-top)); }
+  .main-content-viewport { padding-left: 16px; padding-right: 16px; }
+}
+
+/* ---- Bottom tab bar: safe-area + active indicator + motion ---- */
+.app-bottom-tab-bar {
+  padding-bottom: calc(6px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border-card);
+  background: color-mix(in srgb, var(--bg-app) 88%, transparent);
+  backdrop-filter: blur(12px);
+}
+.tab-item { position: relative; transition: color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease); }
+.tab-item:active { transform: scale(0.94); }
+.tab-item.active { color: var(--accent); }
+.tab-item.active::before {
+  content: ''; position: absolute; top: 2px; left: 50%; transform: translateX(-50%);
+  width: 22px; height: 3px; border-radius: 3px; background: var(--accent);
+  box-shadow: 0 0 10px rgba(16,185,129,0.6);
+}
+.tab-item .tab-icon { transition: transform var(--dur-2) var(--ease); }
+.tab-item.active .tab-icon { transform: translateY(-1px) scale(1.08); }
+
+/* ---- Interaction feedback (premium press + hover) ---- */
+.btn-primary, .btn-secondary, .btn-preset, .btn-scan-qr, .btn-track-reward,
+.reward-card, .res-row, .merchant-card, .method-select-card, .assistant-omnibox,
+.hist-action, .wallet-chip, .mcc-chip, .qr-sample-btn {
+  transition: transform var(--dur-1) var(--ease), box-shadow var(--dur-2) var(--ease),
+              background-color var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
+}
+.btn-primary:not(.disabled):active,
+.btn-secondary:active, .btn-preset:active, .btn-scan-qr:active,
+.merchant-card:active, .method-select-card:active, .res-row:active, .assistant-omnibox:active {
+  transform: scale(0.98);
+}
+
+/* Primary button: subtle gradient + glow for a premium CTA */
+.btn-primary {
+  background-image: linear-gradient(135deg, var(--accent-light, #05C492), var(--accent, #10B981));
+  box-shadow: var(--shadow-glow);
+  letter-spacing: 0.1px;
+}
+.btn-primary.disabled, .btn-primary:disabled { background-image: none; box-shadow: none; }
+
+/* Elevate the key cards for real depth */
+.reward-card, .trust-verdict-card, .qr-result-card, .settings-card,
+.res-row, .breakdown-card, .source-quality-card, .freshness-card, .methodology-card {
+  box-shadow: var(--shadow-2);
+}
+.card-best { box-shadow: var(--shadow-3); }
+.reward-card:hover, .res-row:hover, .merchant-card:hover { box-shadow: var(--shadow-3); }
+
+/* Monogram card badge: make placeholders look intentional, not cheap */
+.method-badge-icon {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), var(--shadow-1);
+  letter-spacing: 0.3px;
+}
+
+/* ---- Confidence gauge / segmented-bar entrance animation ---- */
+.gauge-bar { transition: stroke-dashoffset var(--dur-3) var(--ease); }
+.segment, .progress-fill, .validity-progress-bar-container .progress-fill { transition: width var(--dur-3) var(--ease); }
+
+/* ---- Loading skeletons + spinner ---- */
+@keyframes rt-shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+.rt-skeleton {
+  border-radius: var(--r-md);
+  background: linear-gradient(90deg, #131926 25%, #1b2536 37%, #131926 63%);
+  background-size: 800px 100%;
+  animation: rt-shimmer 1.4s infinite linear;
+}
+@keyframes rt-spin { to { transform: rotate(360deg); } }
+.rt-spinner {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid rgba(148,163,184,0.3); border-top-color: var(--accent);
+  animation: rt-spin 0.8s linear infinite; display: inline-block; vertical-align: middle;
+}
+
+/* ---- Screen entrance (smoother, springier than before) ---- */
+@keyframes rt-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.main-content-viewport > * { animation: rt-enter var(--dur-2) var(--ease); }
+
+/* ---- Respect reduced-motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
