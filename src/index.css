@@ -607,9 +607,6 @@ body {
   flex-direction: column;
   gap: 10px;
   margin-bottom: 24px;
-  max-height: 480px;
-  overflow-y: auto;
-  padding-right: 2px;
 }
 
 .method-select-card {
@@ -2438,3 +2435,15 @@ body {
 .bell-icon { display: inline-flex; align-items: center; }
 .assistant-omnibox-icon { display: inline-flex; align-items: center; color: var(--accent); }
 .tab-item svg { transition: transform var(--dur-2) var(--ease); }
+
+
+/* ============================================================
+   Phase 9.3 — Scroll integrity: single scroll container
+   ============================================================ */
+.main-content-viewport { padding-bottom: calc(28px + env(safe-area-inset-bottom)); }
+/* No inner element (except the viewport) may create its own scroll region */
+.screen-container, .section-container, .methods-select-list, .merchants-grid,
+.results-body-container, .trust-body, .history-list, .alternatives-list,
+.assistant-answer { overflow: visible; max-height: none; }
+/* Let flex screens grow with content instead of clipping */
+.screen-container { flex: 0 0 auto; }
