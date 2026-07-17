@@ -17,6 +17,7 @@ import AmountInput from './components/AmountInput';
 import QrScanner from './components/QrScanner';
 import WalletStrip from './components/WalletStrip';
 import ResultsScreen from './components/ResultsScreen';
+import Icon from './components/Icon';
 
 // Screens
 import LoginScreen from './screens/LoginScreen';
@@ -103,7 +104,7 @@ export default function App() {
           <>
             {walletCards.length > 0 && <WalletStrip cards={walletCards} onManage={openManageWallet} />}
             <button className="assistant-omnibox" onClick={() => openAssistant('')}>
-              <span className="assistant-omnibox-icon" aria-hidden="true">🤖</span>
+              <span className="assistant-omnibox-icon" aria-hidden="true"><Icon name="sparkles" size={18} /></span>
               <span>Ask RewardTrust — "₹1,250 at Starbucks on HDFC Swiggy"</span>
             </button>
             <MerchantSearch merchants={merchantsData} selectedMerchantId={selectedMerchant?.id} onSelectMerchant={handleSelectMerchant} onContinue={() => selectedMerchant && navigate('amount')} onScanClick={() => navigate('scan')} />
@@ -136,10 +137,10 @@ export default function App() {
 
   const showChrome = route !== 'login' && route !== 'wallet';
   const tabs = [
-    { id: 'explore', icon: '🧭', label: 'Home', go: () => navigate('landing') },
-    { id: 'assistant', icon: '🤖', label: 'Ask AI', go: () => openAssistant('') },
-    { id: 'history', icon: '🕒', label: 'History', go: () => navigate('history') },
-    { id: 'profile', icon: '👤', label: 'Profile', go: () => navigate('profile') },
+    { id: 'explore', icon: 'home', label: 'Home', go: () => navigate('landing') },
+    { id: 'assistant', icon: 'sparkles', label: 'Ask AI', go: () => openAssistant('') },
+    { id: 'history', icon: 'clock', label: 'History', go: () => navigate('history') },
+    { id: 'profile', icon: 'user', label: 'Profile', go: () => navigate('profile') },
   ];
 
   return (
@@ -150,7 +151,7 @@ export default function App() {
             <button className="brand-logo" onClick={() => navigate('landing')}>RewardTrust</button>
             <div className="brand-actions">
               <span className="badge-location">Bengaluru, IN</span>
-              <button className="bell-icon" aria-label="Notifications" onClick={() => alert('No new notifications.')}>🔔</button>
+              <button className="bell-icon" aria-label="Notifications" onClick={() => alert('No new notifications.')}><Icon name="bell" size={18} /></button>
             </div>
           </div>
         )}
@@ -159,7 +160,7 @@ export default function App() {
           <nav className="app-bottom-tab-bar" aria-label="Primary">
             {tabs.map((t) => (
               <button key={t.id} type="button" className={`tab-item ${activeTab === t.id ? 'active' : ''}`} aria-current={activeTab === t.id ? 'page' : undefined} onClick={t.go}>
-                <span className="tab-icon" aria-hidden="true">{t.icon}</span>
+                <span className="tab-icon" aria-hidden="true"><Icon name={t.icon} size={22} /></span>
                 <span className="tab-label">{t.label}</span>
               </button>
             ))}

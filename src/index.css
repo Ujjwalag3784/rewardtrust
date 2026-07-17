@@ -2431,3 +2431,10 @@ body {
 
 /* Dividers */
 .divider, hr.divider { border: none; border-top: 1px solid var(--border-card); }
+
+/* Line-icon alignment (Phase 9.2) */
+.tab-icon { display: inline-flex; align-items: center; justify-content: center; height: 24px; }
+.tab-icon svg, .bell-icon svg, .assistant-omnibox-icon svg { display: block; }
+.bell-icon { display: inline-flex; align-items: center; }
+.assistant-omnibox-icon { display: inline-flex; align-items: center; color: var(--accent); }
+.tab-item svg { transition: transform var(--dur-2) var(--ease); }
