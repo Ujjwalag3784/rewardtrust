@@ -2140,3 +2140,34 @@ input:focus-visible,
 .res-why, .res-track { font-size: 12px; font-weight: 700; }
 .res-why { color: #7DD3FC; }
 .res-track { color: #4ADE80; }
+
+/* ============================================================
+   AI Reward Intelligence — assistant UI
+   ============================================================ */
+.assistant-omnibox {
+  display: flex; align-items: center; gap: 10px;
+  width: calc(100% - 40px); margin: 12px 20px 0; padding: 14px 16px;
+  border-radius: 14px; text-align: left; cursor: pointer;
+  background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(14,165,233,0.12));
+  border: 1px solid rgba(124,58,237,0.4); color: #C4B5FD; font-size: 13px; font-weight: 600;
+}
+.assistant-omnibox:hover { background: linear-gradient(135deg, rgba(124,58,237,0.28), rgba(14,165,233,0.18)); }
+.assistant-omnibox-icon { font-size: 18px; }
+
+.assistant-intro { margin-bottom: 12px; }
+.assistant-input-wrap { display: flex; flex-direction: column; gap: 10px; }
+.assistant-input { font-family: inherit; }
+.assistant-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.assistant-actions .btn-primary { flex: 1; min-width: 90px; }
+.assistant-actions .btn-secondary { flex: 0 0 auto; }
+.assistant-note { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: rgba(14,165,233,0.10); border: 1px solid rgba(14,165,233,0.3); color: #CBD5E1; font-size: 12px; line-height: 1.5; }
+.assistant-suggestions { margin-top: 14px; }
+.assistant-answer { margin-top: 18px; }
+.assistant-headline { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 15px; font-weight: 800; color: #F1F5F9; margin-bottom: 10px; }
+
+.diag-list { list-style: none; padding: 0; margin: 12px 0 6px; }
+.diag-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; margin-bottom: 6px; background: rgba(15,27,42,0.5); border: 1px solid rgba(148,163,184,0.12); }
+.diag-item.applies { background: rgba(245,158,11,0.10); border-color: rgba(245,158,11,0.4); }
+.diag-icon { font-size: 14px; }
+.diag-label { display: block; font-size: 13px; font-weight: 700; color: #F1F5F9; }
+.diag-detail { display: block; font-size: 12px; color: #94A3B8; line-height: 1.45; margin-top: 2px; }

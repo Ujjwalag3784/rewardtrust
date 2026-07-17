@@ -10,7 +10,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "test": "node --experimental-strip-types scripts/verify-engine.mjs && node --experimental-strip-types scripts/verify-qr.mjs && node --experimental-strip-types scripts/verify-verification.mjs && node --experimental-strip-types scripts/verify-wallet.mjs"
+    "test": "node --experimental-strip-types scripts/verify-engine.mjs && node --experimental-strip-types scripts/verify-qr.mjs && node --experimental-strip-types scripts/verify-verification.mjs && node --experimental-strip-types scripts/verify-wallet.mjs && node --experimental-strip-types scripts/verify-assistant.mjs"
   },
   "keywords": [
     "rewardtrust",
@@ -23,7 +23,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "html5-qrcode": "^2.3.8"
+    "html5-qrcode": "^2.3.8",
+    "tesseract.js": "^5.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

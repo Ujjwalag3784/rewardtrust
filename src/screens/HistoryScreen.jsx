@@ -2,7 +2,7 @@ import React from 'react';
 import formatCurrency from '../utils/formatCurrency';
 import { OUTCOME_LABEL } from '../utils/labels';
 
-export default function HistoryScreen({ records, onSetOutcome }) {
+export default function HistoryScreen({ records, onSetOutcome, onDiagnose }) {
   return (
     <div className="screen-container animate-fade-in">
       <div className="results-header-bar justify-center">
@@ -33,6 +33,9 @@ export default function HistoryScreen({ records, onSetOutcome }) {
                   </span>
                   <span className={`hist-outcome-badge ${rec.outcome}`}>{OUTCOME_LABEL[rec.outcome]}</span>
                 </div>
+                {onDiagnose && (rec.outcome === 'not_received' || rec.outcome === 'partial') && (
+                  <button className="hist-reset-link" onClick={() => onDiagnose(rec)}>🤖 Why didn't this earn? Ask RewardTrust →</button>
+                )}
 
                 {rec.outcome === 'pending' ? (
                   <div className="hist-actions">
