@@ -18,6 +18,7 @@ import QrScanner from './components/QrScanner';
 import WalletStrip from './components/WalletStrip';
 import ResultsScreen from './components/ResultsScreen';
 import Icon from './components/Icon';
+import { StatusBar, TabBar } from './components/Chrome';
 
 // Screens
 import LoginScreen from './screens/LoginScreen';
@@ -135,38 +136,23 @@ export default function App() {
     }
   };
 
-  const showChrome = route !== 'login' && route !== 'wallet';
-  const tabs = [
-    { id: 'explore', icon: 'home', label: 'Home', go: () => navigate('landing') },
-    { id: 'assistant', icon: 'sparkles', label: 'Ask AI', go: () => openAssistant('') },
-    { id: 'history', icon: 'clock', label: 'History', go: () => navigate('history') },
-    { id: 'profile', icon: 'user', label: 'Profile', go: () => navigate('profile') },
-  ];
+  const showTab = !['login', 'wallet', 'scan'].includes(route);
 
   return (
     <div className="app-shell-backdrop">
-      <div className="mobile-frame-wrapper">
-        {route === 'landing' && (
-          <div className="app-brand-header">
-            <button className="brand-logo" onClick={() => navigate('landing')}>RewardTrust</button>
-            <div className="brand-actions">
-              <span className="badge-location">Bengaluru, IN</span>
-              <button className="bell-icon" aria-label="Notifications" onClick={() => alert('No new notifications.')}><Icon name="bell" size={18} /></button>
-            </div>
-          </div>
-        )}
-        <main className="main-content-viewport">{renderRoute()}</main>
-        {showChrome && (
-          <nav className="app-bottom-tab-bar" aria-label="Primary">
-            {tabs.map((t) => (
-              <button key={t.id} type="button" className={`tab-item ${activeTab === t.id ? 'active' : ''}`} aria-current={activeTab === t.id ? 'page' : undefined} onClick={t.go}>
-                <span className="tab-icon" aria-hidden="true"><Icon name={t.icon} size={22} /></span>
-                <span className="tab-label">{t.label}</span>
-              </button>
-            ))}
-          </nav>
-        )}
+      <div className="rp">
+        <div className="rdi" />
+        <StatusBar />
+        <div className="rs">{renderRoute()}</div>
+        {showTab && <TabBar active={activeTab} onTab={(id) => (
+          id === 'explore' ? navigate('landing')
+            : id === 'assistant' ? openAssistant('')
+            : id === 'history' ? navigate('history')
+            : navigate('profile')
+        )} />}
+        <div className="rhi"><div className="rhi-bar" /></div>
       </div>
     </div>
   );
 }
+
