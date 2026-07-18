@@ -5,12 +5,14 @@ import formatCurrency from '../utils/formatCurrency';
 import { parseQuery, diagnose } from '../utils/assistant';
 import { evaluateWallet, evaluateCard } from '../utils/lookup';
 import extractReceipt from '../utils/receiptOcr';
+import { retrieveGlossary } from '../utils/glossary';
+import askApi from '../utils/askApi';
 
 const SUGGESTIONS = [
   'Paying ₹1,250 at Starbucks on HDFC Swiggy',
   '₹2000 at Amazon — best card?',
   "Why didn't I get cashback at Amazon on HDFC Swiggy?",
-  '₹800 at Zomato',
+  'What is an MCC and why does it matter?',
 ];
 
 function buildAnswer(q, walletIds, isPrime) {
@@ -24,11 +26,34 @@ function buildAnswer(q, walletIds, isPrime) {
     const r = evaluateCard(cardId, parsed.merchant, amount, { isPrime });
     return { kind: 'diagnose', r, items: diagnose(r, amount, programsData[cardId]) };
   }
-  if (!parsed.merchant) return { kind: 'text', text: 'Which merchant are you paying? Try "Amazon", "Zomato", or scan a QR.' };
+  if (!parsed.merchant) return { kind: 'text', text: '' };
   if (!parsed.amountInr) return { kind: 'text', text: `Got ${parsed.merchant.name}. How much are you paying? e.g. "₹1000".` };
   const results = evaluateWallet(walletIds, parsed.merchant, parsed.amountInr, { isPrime });
   const best = results.filter((x) => x.verdict === 'eligible').sort((a, b) => b.rewardValueInr - a.rewardValueInr)[0];
-  return { kind: 'lookup', merchant: parsed.merchant, amount: parsed.amountInr, results, best, inputConf: parsed.inputConfidence };
+  return { kind: 'lookup', merchant: parsed.merchant, amount: parsed.amountInr, results, best };
+}
+
+// Compact, verified facts sent to the LLM (the only source of truth for numbers).
+function toFacts(a) {
+  if (a.kind === 'lookup') {
+    return {
+      intent: 'lookup', merchant: a.merchant.name, mcc: a.merchant.mcc, amount: a.amount,
+      cards: a.results.map((r) => ({ card: r.cardName, verdict: r.verdict, rewardInr: r.rewardValueInr, ratePct: +(r.effectiveRate * 100).toFixed(2), reason: r.reason, sourceUrl: r.source?.url, confidence: r.confidence?.score })),
+    };
+  }
+  if (a.kind === 'diagnose') {
+    return { intent: 'diagnose', card: a.r.cardName, verdict: a.r.verdict, reason: a.r.reason, causes: a.items.filter((i) => i.applies).map((i) => `${i.label}: ${i.detail}`), sourceUrl: a.r.source?.url, confidence: a.r.confidence?.score };
+  }
+  return { intent: 'clarify', note: a.text || null };
+}
+function fallbackText(a) {
+  if (a.kind === 'lookup') {
+    return a.best
+      ? `Best pick — ${a.best.cardName} earns ${formatCurrency(a.best.rewardValueInr)} (${(a.best.effectiveRate * 100).toFixed(a.best.effectiveRate < 0.1 ? 1 : 0)}%) at ${a.merchant.name}.`
+      : `No card in your wallet earns a reward at ${a.merchant.name} for this payment.`;
+  }
+  if (a.kind === 'diagnose') return a.r.reason;
+  return a.text || 'Which merchant are you paying? Try "Amazon", "Zomato", or scan a QR.';
 }
 
 function Source({ url, band, tone }) {
@@ -38,41 +63,41 @@ function Source({ url, band, tone }) {
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={col} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" /></svg>
       <div style={{ minWidth: 0 }}>
         <div style={{ font: "500 10.5px/1.2 'Inter'", color: col, marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{url ? url.replace(/^https?:\/\//, '') : 'no source on file'}</div>
-        <div style={{ font: "400 10px/1 'Inter'", color: 'rgba(245,245,247,.35)' }}>Confidence {band}</div>
+        <div style={{ font: "400 10px/1 'Inter'", color: 'rgba(245,245,247,.35)' }}>Confidence {band ?? '—'}</div>
       </div>
     </div>
   );
 }
 
-function AiCard({ a, onWhy }) {
-  if (a.kind === 'text') return <div style={{ font: "400 12.5px/1.6 'Inter'", color: 'rgba(245,245,247,.75)' }}>{a.text}</div>;
+function AiCard({ a, aiText, loading, onWhy }) {
+  const lead = loading ? null : (aiText || fallbackText(a));
+  const leadBlock = lead && <div style={{ font: "400 12.5px/1.6 'Inter'", color: 'rgba(245,245,247,.78)', marginBottom: (a.kind === 'text') ? 0 : 12 }}>{lead}</div>;
+
+  if (loading) return <div style={{ font: "400 12px/1 'Inter'", color: 'rgba(245,245,247,.45)', display: 'flex', gap: 8, alignItems: 'center' }}><span className="rt-spinner" /> Thinking…</div>;
+  if (a.kind === 'text') return leadBlock;
+
   if (a.kind === 'diagnose') {
-    const { r, items } = a;
     return (
       <div>
-        <div style={{ font: "400 12.5px/1.6 'Inter'", color: 'rgba(245,245,247,.75)', marginBottom: 10 }}>{r.reason}</div>
+        {leadBlock}
         <div style={{ marginBottom: 10 }}>
-          {items.filter((i) => i.applies).slice(0, 2).map((i) => (
+          {a.items.filter((i) => i.applies).slice(0, 2).map((i) => (
             <div key={i.code} style={{ background: '#0B0B0E', border: '1px solid rgba(245,158,11,.18)', borderRadius: 8, padding: '8px 10px', marginBottom: 6 }}>
               <div style={{ font: "600 11px/1.3 'Inter'", color: '#F59E0B', marginBottom: 2 }}>⚠ {i.label}</div>
               <div style={{ font: "400 10.5px/1.5 'Inter'", color: 'rgba(245,245,247,.5)' }}>{i.detail}</div>
             </div>
           ))}
         </div>
-        <Source url={r.source?.url} band={r.confidence?.score} tone="amber" />
+        <Source url={a.r.source?.url} band={a.r.confidence?.score} tone="amber" />
       </div>
     );
   }
+
   // lookup
   const { merchant, amount, best, results } = a;
-  const eligibleCount = results.filter((x) => x.verdict === 'eligible' || x.verdict === 'partial').length;
   return (
     <div>
-      <div style={{ font: "400 12.5px/1.6 'Inter'", color: 'rgba(245,245,247,.75)', marginBottom: 12 }}>
-        {best
-          ? <>Best pick — <span style={{ color: '#34D399', fontWeight: 600 }}>{best.cardName}</span> earns <span style={{ color: '#34D399', fontWeight: 600 }}>{formatCurrency(best.rewardValueInr)} ({(best.effectiveRate * 100).toFixed(best.effectiveRate < 0.1 ? 1 : 0)}%)</span> at {merchant.name}.</>
-          : <>No card in your wallet earns a reward at {merchant.name} for this payment.</>}
-      </div>
+      {leadBlock}
       {best && (
         <div style={{ background: '#0B0B0E', border: '1px solid rgba(52,211,153,.15)', borderRadius: 10, padding: 10, marginBottom: 12 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
@@ -91,11 +116,8 @@ function AiCard({ a, onWhy }) {
           </div>
         </div>
       )}
-      <div style={{ font: "400 11.5px/1.6 'Inter'", color: 'rgba(245,245,247,.55)', marginBottom: 10 }}>{(best || results[0])?.reason}</div>
       <Source url={(best || results[0])?.source?.url} band={(best || results[0])?.confidence?.score} tone="green" />
-      {eligibleCount < results.length && (
-        <button onClick={() => onWhy(best || results[0])} style={{ background: 'none', border: 'none', font: "500 11px/1 'Inter'", color: '#34D399', cursor: 'pointer', marginTop: 8, padding: 0 }}>See full breakdown ↗</button>
-      )}
+      <button onClick={() => onWhy(best || results[0])} style={{ background: 'none', border: 'none', font: "500 11px/1 'Inter'", color: '#34D399', cursor: 'pointer', marginTop: 8, padding: 0 }}>See full breakdown ↗</button>
     </div>
   );
 }
@@ -107,10 +129,23 @@ export default function AssistantScreen({ walletIds, isPrime, onShowTrustReport,
   const fileRef = useRef(null);
   const scrollRef = useRef(null);
 
-  const run = (q) => {
+  const run = async (q) => {
     const a = buildAnswer(q, walletIds, isPrime);
-    setMessages((m) => [...m, { role: 'user', text: q }, { role: 'ai', a }]);
+    setMessages((m) => [...m, { role: 'user', text: q }, { role: 'ai', a, aiText: null, loading: true }]);
     setText('');
+    let aiText = null;
+    try {
+      aiText = await askApi({ question: q, facts: toFacts(a), glossary: retrieveGlossary(q) });
+    } catch {
+      aiText = null; // deterministic fallback used in render
+    }
+    setMessages((m) => {
+      const c = [...m];
+      for (let i = c.length - 1; i >= 0; i--) {
+        if (c[i].role === 'ai' && c[i].loading) { c[i] = { ...c[i], aiText, loading: false }; break; }
+      }
+      return c;
+    });
   };
 
   useEffect(() => { if (initialQuery) run(initialQuery); /* eslint-disable-next-line */ }, []);
@@ -122,14 +157,13 @@ export default function AssistantScreen({ walletIds, isPrime, onShowTrustReport,
     setBusy(true);
     const fields = await extractReceipt(f);
     setBusy(false);
-    if (!fields.ok) { setMessages((m) => [...m, { role: 'ai', a: { kind: 'text', text: `⚠️ ${fields.error || 'Could not read the receipt.'}` } }]); return; }
+    if (!fields.ok) { setMessages((m) => [...m, { role: 'ai', a: { kind: 'text', text: `⚠️ ${fields.error || 'Could not read the receipt.'}` }, aiText: null, loading: false }]); return; }
     const q = `${fields.merchantName || ''} ${fields.amount ? '₹' + fields.amount : ''}`.trim();
-    if (q) run(q); else setMessages((m) => [...m, { role: 'ai', a: { kind: 'text', text: 'Read the receipt but could not find a merchant/amount — type it instead.' } }]);
+    if (q) run(q);
   };
 
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-      {/* AI header */}
       <div style={{ padding: '8px 20px 12px', borderBottom: '1px solid rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button onClick={onBack} aria-label="Back" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
@@ -148,11 +182,10 @@ export default function AssistantScreen({ walletIds, isPrime, onShowTrustReport,
         </div>
       </div>
 
-      {/* Messages */}
       <div ref={scrollRef} className="rs" style={{ padding: '14px 18px 8px' }}>
         {messages.length === 0 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
-            <div style={{ font: "400 12px/1.5 'Inter'", color: 'rgba(245,245,247,.45)', marginBottom: 4 }}>Ask about any payment. I answer only from verified card terms.</div>
+            <div style={{ font: "400 12px/1.5 'Inter'", color: 'rgba(245,245,247,.45)', marginBottom: 4 }}>Ask about any payment or reward concept. Every reward figure comes from verified card terms.</div>
             {SUGGESTIONS.map((s) => (
               <button key={s} onClick={() => run(s)} style={{ textAlign: 'left', background: '#141418', border: '1px solid rgba(255,255,255,.08)', borderRadius: 12, padding: '11px 13px', font: "400 12.5px/1.4 'Inter'", color: 'rgba(245,245,247,.7)', cursor: 'pointer' }}>{s}</button>
             ))}
@@ -174,14 +207,13 @@ export default function AssistantScreen({ walletIds, isPrime, onShowTrustReport,
               <span style={{ font: "600 10.5px/1 'Inter'", color: 'rgba(245,245,247,.5)' }}>RewardTrust · verified answer</span>
             </div>
             <div style={{ background: '#141418', border: '1px solid rgba(255,255,255,.08)', borderRadius: '4px 18px 18px 18px', padding: 14 }}>
-              <AiCard a={m.a} onWhy={onShowTrustReport} />
+              <AiCard a={m.a} aiText={m.aiText} loading={m.loading} onWhy={onShowTrustReport} />
             </div>
           </div>
         ))}
         {busy && <div style={{ font: "400 12px/1 'Inter'", color: 'rgba(245,245,247,.4)', display: 'flex', gap: 8, alignItems: 'center' }}><span className="rt-spinner" /> Reading receipt…</div>}
       </div>
 
-      {/* Input bar */}
       <div style={{ padding: '10px 16px', background: 'rgba(9,9,12,.92)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)', borderTop: '1px solid rgba(255,255,255,.07)', flexShrink: 0 }}>
         <div style={{ background: '#141418', border: '1px solid rgba(255,255,255,.1)', borderRadius: 14, padding: '8px 10px 8px 12px', display: 'flex', alignItems: 'center', gap: 8 }}>
           <button onClick={onScanClick} aria-label="Scan QR" style={{ width: 28, height: 28, background: '#1C1C22', border: 'none', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>

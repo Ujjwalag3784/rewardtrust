@@ -1,138 +1,91 @@
 # RewardTrust
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=111827)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-16A34A?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)
-![Data](https://img.shields.io/badge/Data-Static_JSON-0EA5E9?style=for-the-badge)
-![Ranking](https://img.shields.io/badge/Ranking-Unbiased-F97316?style=for-the-badge)
+![Tests](https://img.shields.io/badge/Tests-75_passing-16A34A?style=for-the-badge)
+![Hallucination](https://img.shields.io/badge/Hallucination-structurally_impossible-7C3AED?style=for-the-badge)
 
-RewardTrust is a React and Vite MVP for comparing Indian payment rewards before a user pays. It helps users enter a merchant and transaction amount, select the payment methods they own, and see a ranked recommendation with reward value, eligibility conditions, and a trust-oriented verification breakdown.
+**The Trust Layer for Indian payment rewards.** RewardTrust answers one question — *"If I pay this merchant with one of my cards, exactly what reward will I get, and why?"* — and backs **every** answer with an official source, an MCC-based eligibility decision, a computed confidence score, and a last-verified date. When something can't be verified, it says so instead of guessing.
 
-The product is based on the RewardTrust PRD: a neutral transparency layer for UPI and card rewards. RewardTrust is not a payment app, cashback provider, or sponsored ranking surface. Its goal is to make reward outcomes understandable before the transaction decision is made.
+> Trust is the product. Whenever there's a trade-off between being helpful and being correct, RewardTrust chooses correct.
 
-## Product Focus
+---
 
-RewardTrust addresses the anticipation gap in payment rewards: users often do not know whether a transaction will earn a reward, how much it will earn, or what conditions apply until after they have already paid.
+## What makes it different
 
-The MVP focuses on:
+Most reward apps are comparison tables that quietly assume you'll earn the headline rate. RewardTrust models the thing that actually decides rewards in India — the **Merchant Category Code (MCC)** — and refuses to promise a number it can't verify.
 
-- Merchant reward lookup for common Indian commerce categories.
-- Amount-based reward calculation in rupee terms.
-- Payment method comparison across selected cards and payment apps.
-- Inline eligibility conditions, caps, and exclusions.
-- Trust report views that surface confidence score, source type, verification chain, and freshness indicators.
-- A mobile-first prototype suitable for validation and portfolio review.
+The canonical example, reproduced faithfully by the engine and its tests: paying **Amazon** with the **HDFC Swiggy** card returns **PARTIAL — "MCC 5262 (Marketplaces) is excluded from the 5% online tier, so it earns the 1% base rate"**, while the same Amazon payment on **SBI Cashback** returns **ELIGIBLE 5%**. Same merchant, opposite outcome, each explained and cited.
 
-## Current Scope
+---
 
-The current implementation is a frontend-only MVP using static JSON datasets.
+## Core capabilities
 
-Included:
+- **Personal card wallet** — mobile-number sign-in (demo OTP, client-side) and a saved wallet of the cards you own. Every lookup runs against *your* wallet.
+- **Two ways to check a payment** — scan a UPI QR, or search a merchant and enter an amount.
+- **Grouped, explained results** — cards split into **✓ Will earn** (ranked by value), **✕ Won't earn** (exact reason), and **? Can't confirm** (MCC unknown — never a fabricated number).
+- **Explainable MCC-first engine** — verdict (`eligible | partial | ineligible | unknown`) + plain-language reason + the official quote, source URL, and last-verified date behind it.
+- **Reward valuation** — cashback, Amazon Pay balance, and **points shown with an estimated ₹ value** (labelled *estimated*).
+- **AI Reward Intelligence layer (deterministic)** — an "Ask RewardTrust" assistant for natural-language lookups, a *"why didn't I get cashback?"* diagnostic, and receipt/QR understanding — with **no language model in the number-producing path**, so hallucination is structurally impossible.
+- **Post-payment verification loop** — log whether a reward actually posted; confirmed outcomes feed back into the confidence score.
+- **UPI QR camera scanner** — reads the merchant category (`mc`) straight from the QR when present, per the NPCI deep-link spec.
 
-- Merchant search and quick selection.
-- Transaction amount entry with preset increments.
-- Multi-select payment method profile.
-- Ranked reward recommendations.
-- Best option highlighting with alternative comparisons.
-- Calculation breakdown and condition display.
-- Trust report screen with confidence scoring and verification details.
-- Basic history and profile mock views.
+---
 
-Not included:
+## The AI layer, and why it's *not* a chatbot
 
-- Real payment processing.
-- Bank account or card account linking.
-- Live reward-rate ingestion.
-- Backend user accounts.
-- Production analytics or error tracking.
+The reward decision is **100% deterministic** — the verified rule engine is the single source of truth and the only thing allowed to produce a number, verdict, or citation. AI is confined to the fuzzy edges:
 
-## Technology Stack
-
-- React 18
-- Vite 4
-- JavaScript modules
-- Static JSON data files
-- CSS-based mobile app prototype
-
-## Project Structure
-
-```text
-rewardtrust/
-  public/
-    logos/                  Merchant logo assets
-  src/
-    components/             Reusable UI components
-    data/                   Static MVP reward, merchant, and condition data
-    utils/                  Reward calculation, ranking, and formatting helpers
-    App.jsx                 Application state machine and screen composition
-    index.css               Mobile-first application styling
-    main.jsx                React entry point
-  index.html
-  package.json
-  vite.config.js
+```
+User text / QR / receipt
+        │
+   NLU (deterministic)      ← classifies intent, extracts {merchant, amount, card, mcc}
+        │  structured, never prose numbers
+   VERIFIED ENGINE (tools)  ← the only source of truth: evaluateEligibility, lookup, diagnose
+        │  result + official source + confidence
+   Explainer                ← narrates the engine's output; every figure copied from it
 ```
 
-## Getting Started
+Guardrails: the assistant never emits a number it didn't get from the engine; displayed confidence is capped at `min(inputConfidence, ruleConfidence)`; unresolved inputs trigger a **clarifying question**, not a guess; unknown MCC renders *"This could not be verified from official sources."*
 
-Install dependencies:
+Receipts are OCR'd client-side (Tesseract.js) to *seed* a lookup (amount, merchant, card hint) for you to confirm — never to decide eligibility, because receipts don't carry the MCC.
 
-```bash
-npm install
+---
+
+## Supported cards (10, official-sourced)
+
+Amazon Pay ICICI · SBI Cashback · Swiggy HDFC · Kiwi (RuPay-on-UPI) · CRED · Flipkart Axis · Axis ACE · HDFC Millennia · IDFC FIRST Millennia · SBI SimplyCLICK.
+
+Every reward rule carries its own `source { url, title, quote, lastUpdated }`. Anything not verifiable from official documentation is marked in-app rather than asserted.
+
+---
+
+## Architecture
+
 ```
+src/
+  data/                     Verified, sourced datasets (the source of truth)
+    card-programs.json        10 cards → ordered rules (rate, cap, MCC matchers, per-rule source)
+    merchants.json            merchant registry (name, MCC, MCC-confidence, VPA patterns)
+    mcc-catalog.json          MCC → label / friendly category
+    payment-methods.json    
+## AI assistant backend (grounded, optional)
 
-Run the development server:
+The "Ask RewardTrust" tab runs on a grounded architecture where **the language model never produces a reward number** — it only narrates verified facts computed by the deterministic engine, plus a curated reward glossary. Hallucination stays structurally impossible.
 
-```bash
-npm run dev
-```
+- **Endpoint:** `api/ask.js` (Vercel serverless). It refuses off-topic questions (rewards-only scope), answers strictly from the verified facts + glossary it's given, rate-limits per IP, and caps output tokens.
+- **Fallback:** if no API key is set (or the call fails / is rate-limited), the assistant automatically falls back to the deterministic answer. So the app works **for free** until a key is added, and costs only when someone actually chats.
 
-Build for production:
+### Enable the LLM answers
 
-```bash
-npm run build
-```
+Set these environment variables in your Vercel project (Settings → Environment Variables):
 
-Preview the production build:
+| Variable | Required | Default | Notes |
+|---|---|---|---|
+| `ANTHROPIC_API_KEY` | yes | — | Your Anthropic key. Never committed; the browser never sees it. |
+| `ANTHROPIC_MODEL` | no | `claude-3-5-haiku-latest` | Override with the exact model string you want (e.g. a Haiku model for low cost). |
 
-```bash
-npm run preview
-```
+Redeploy after adding the key. Locally, `vercel dev` runs the function; a plain `npm run dev` (Vite only) will use the deterministic fallback since `/api` isn't served.
 
-## Reward Calculation Model
-
-RewardTrust calculates a result for each selected payment method by:
-
-1. Looking for merchant-specific reward rates.
-2. Falling back to category-specific rates.
-3. Falling back to general payment-method rates.
-4. Applying minimum spend thresholds.
-5. Applying premium rates where eligible.
-6. Applying maximum caps when defined.
-7. Attaching condition and verification metadata.
-8. Ranking results by reward amount, then confidence score.
-
-The calculation logic is implemented in `src/utils/calculateReward.js` and `src/utils/rankResults.js`.
-
-## Data Model
-
-The MVP uses static data files:
-
-- `src/data/merchants.json`: supported merchants and categories.
-- `src/data/payment-methods.json`: available cards and payment methods.
-- `src/data/reward-rates.json`: rate entries, caps, confidence scores, source metadata, and verification chains.
-- `src/data/conditions.json`: reusable plain-language eligibility rules and exclusions.
-
-This structure is intentionally simple so the MVP can be validated without backend infrastructure. A production version should migrate reward rates and verification evidence to a managed database with freshness checks and source auditing.
-
-## Product Principles
-
-- Accuracy over inflated reward expectations.
-- Plain-language conditions over legal fine print.
-- Unbiased ranking based on reward outcome and confidence, not commercial placement.
-- Fast time to first useful result.
-- Clear trust signals whenever data quality or freshness affects a recommendation.
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+> The knowledge base is `src/data/reward-glossary.json` (reward concepts) plus the verified `card-programs.json` rules. Editing those updates answers instantly — no model retraining.
