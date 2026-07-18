@@ -17,6 +17,7 @@ import AmountInput from './components/AmountInput';
 import QrScanner from './components/QrScanner';
 import WalletStrip from './components/WalletStrip';
 import ResultsScreen from './components/ResultsScreen';
+import HomeScreen from './screens/HomeScreen';
 import Icon from './components/Icon';
 import { StatusBar, TabBar } from './components/Chrome';
 
@@ -102,14 +103,16 @@ export default function App() {
         return <CardWalletScreen cards={paymentMethodsData} selected={draftWallet} onToggle={toggleDraft} onSave={saveWallet} onBack={() => navigate(walletMode === 'manage' ? 'profile' : 'login')} mode={walletMode} />;
       case 'landing':
         return (
-          <>
-            {walletCards.length > 0 && <WalletStrip cards={walletCards} onManage={openManageWallet} />}
-            <button className="assistant-omnibox" onClick={() => openAssistant('')}>
-              <span className="assistant-omnibox-icon" aria-hidden="true"><Icon name="sparkles" size={18} /></span>
-              <span>Ask RewardTrust — "₹1,250 at Starbucks on HDFC Swiggy"</span>
-            </button>
-            <MerchantSearch merchants={merchantsData} selectedMerchantId={selectedMerchant?.id} onSelectMerchant={handleSelectMerchant} onContinue={() => selectedMerchant && navigate('amount')} onScanClick={() => navigate('scan')} />
-          </>
+          <HomeScreen
+            walletCards={walletCards}
+            merchants={merchantsData}
+            records={loadAll()}
+            onAsk={() => openAssistant('')}
+            onScan={() => navigate('scan')}
+            onReceipt={() => openAssistant('')}
+            onManage={openManageWallet}
+            onSelectMerchant={handleSelectMerchant}
+          />
         );
       case 'scan':
         return <QrScanner merchants={merchantsData} mccCatalog={mccCatalog} onAnalyzed={handleAnalyzedQr} onBack={() => navigate('landing')} />;
