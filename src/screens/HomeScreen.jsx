@@ -1,5 +1,6 @@
 import React from 'react';
 import { cardArt } from '../utils/cardArt';
+import { MerchantLogo, NetworkMark } from '../components/Brand';
 import formatCurrency from '../utils/formatCurrency';
 
 const OUT = {
@@ -10,18 +11,15 @@ const OUT = {
 };
 
 function MerchantTile({ m, onClick }) {
-  const a = m.accentColor || '#94A3B8';
   return (
     <button type="button" onClick={onClick} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
-      <div style={{ width: 56, height: 56, background: `linear-gradient(135deg, ${a}26, ${a}0d)`, borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,.08)' }}>
-        <span style={{ font: "700 20px/1 'Outfit'", color: a }}>{m.name[0]}</span>
-      </div>
+      <MerchantLogo merchant={m} size={56} radius={16} />
       <span style={{ font: "400 10.5px/1.2 'Inter'", color: 'rgba(245,245,247,.55)', textAlign: 'center' }}>{m.name}</span>
     </button>
   );
 }
 
-export default function HomeScreen({ walletCards, merchants, records, onAsk, onScan, onReceipt, onManage, onSelectMerchant }) {
+export default function HomeScreen({ walletCards, merchants, records, onAsk, onScan, onReceipt, onManage, onMore, onSelectMerchant }) {
   const gridMerchants = ['amazon', 'swiggy', 'zomato', 'flipkart', 'myntra', 'blinkit', 'starbucks']
     .map((id) => merchants.find((m) => m.id === id)).filter(Boolean);
   const recent = (records || []).slice(0, 2);
@@ -78,14 +76,14 @@ export default function HomeScreen({ walletCards, merchants, records, onAsk, onS
             <div style={{ font: "500 10px/1 'Inter'", letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(245,245,247,.38)' }}>My Cards</div>
             <button onClick={onManage} style={{ background: 'none', border: 'none', font: "500 11.5px/1 'Inter'", color: '#34D399', cursor: 'pointer' }}>Manage ›</button>
           </div>
-          <div style={{ display: 'flex', gap: 12, overflowX: 'auto', padding: '0 22px 4px' }}>
+          <div className="no-scrollbar" style={{ display: 'flex', gap: 12, overflowX: 'auto', padding: '0 22px 4px' }}>
             {walletCards.map((c) => {
               const art = cardArt(c.id);
               return (
                 <div key={c.id} style={{ width: 152, height: 96, background: art.grad, borderRadius: 14, flexShrink: 0, padding: 13, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', border: '1px solid rgba(255,255,255,.08)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <span style={{ font: "700 11px/1 'Outfit'", color: 'rgba(255,255,255,.5)', letterSpacing: '.04em' }}>{art.short}</span>
-                    <span style={{ font: "600 8px/1 'Outfit'", color: 'rgba(255,255,255,.45)' }}>{c.network || ''}</span>
+                    <NetworkMark network={c.network} opacity={0.55} />
                   </div>
                   <div>
                     <div style={{ font: "500 10px/1 'Inter'", color: 'rgba(255,255,255,.4)', marginBottom: 3 }}>{art.tag}</div>
@@ -103,7 +101,7 @@ export default function HomeScreen({ walletCards, merchants, records, onAsk, onS
         <div style={{ font: "500 10px/1 'Inter'", letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(245,245,247,.38)', marginBottom: 14 }}>Merchants</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginBottom: 16 }}>
           {gridMerchants.map((m) => <MerchantTile key={m.id} m={m} onClick={() => onSelectMerchant(m)} />)}
-          <button type="button" onClick={onManage} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
+          <button type="button" onClick={onMore} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 7 }}>
             <div style={{ width: 56, height: 56, background: '#141418', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,.08)' }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.4)" strokeWidth="1.5" strokeLinecap="round"><circle cx="5" cy="12" r="1.5" /><circle cx="12" cy="12" r="1.5" /><circle cx="19" cy="12" r="1.5" /></svg>
             </div>

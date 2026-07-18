@@ -1,6 +1,7 @@
 import React from 'react';
 import formatCurrency from '../utils/formatCurrency';
 import { cardArt } from '../utils/cardArt';
+import { MerchantLogo } from './Brand';
 
 const C = { green: '#34D399', red: '#F87171', grey: '#6B7280' };
 
@@ -105,7 +106,7 @@ export default function ResultsScreen({ merchant, spendAmount, results, onBack, 
           <button onClick={onBack} aria-label="Back" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.6)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 5l-7 7 7 7" /></svg>
           </button>
-          <div style={{ width: 36, height: 36, background: `linear-gradient(135deg,${a}26,${a}0d)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ font: "700 15px/1 'Outfit'", color: a }}>{merchant?.name?.[0]}</span></div>
+          <MerchantLogo merchant={merchant} size={36} radius={10} />
           <div>
             <div style={{ font: "600 16px/1 'Outfit'", color: '#F5F5F7', letterSpacing: '-.01em' }}>{merchant?.name}</div>
             <div style={{ font: "400 10px/1 'Inter'", color: 'rgba(245,245,247,.38)' }}>{merchant?.category || ''}</div>

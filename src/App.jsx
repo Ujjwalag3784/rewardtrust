@@ -18,6 +18,7 @@ import QrScanner from './components/QrScanner';
 import WalletStrip from './components/WalletStrip';
 import ResultsScreen from './components/ResultsScreen';
 import HomeScreen from './screens/HomeScreen';
+import MerchantsScreen from './screens/MerchantsScreen';
 import Icon from './components/Icon';
 import { StatusBar, TabBar } from './components/Chrome';
 
@@ -111,9 +112,12 @@ export default function App() {
             onScan={() => navigate('scan')}
             onReceipt={() => openAssistant('')}
             onManage={openManageWallet}
+            onMore={() => navigate('merchants')}
             onSelectMerchant={handleSelectMerchant}
           />
         );
+      case 'merchants':
+        return <MerchantsScreen merchants={merchantsData} onSelect={handleSelectMerchant} onBack={() => navigate('landing')} />;
       case 'scan':
         return <QrScanner merchants={merchantsData} mccCatalog={mccCatalog} onAnalyzed={handleAnalyzedQr} onBack={() => navigate('landing')} />;
       case 'assistant':

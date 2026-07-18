@@ -1,4 +1,5 @@
 import React from 'react';
+import { MerchantLogo } from './Brand';
 
 const ONES = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
 const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
@@ -46,7 +47,7 @@ export default function AmountInput({ merchant, amount, onChangeAmount, onContin
           <button onClick={onBack} aria-label="Back" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.7)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 5l-7 7 7 7" /></svg>
           </button>
-          <div style={{ width: 36, height: 36, background: `linear-gradient(135deg,${a}26,${a}0d)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ font: "700 14px/1 'Outfit'", color: a }}>{merchant?.name?.[0] || '?'}</span></div>
+          <MerchantLogo merchant={merchant} size={36} radius={10} />
           <div>
             <div style={{ font: "600 15px/1 'Outfit'", color: '#F5F5F7', letterSpacing: '-.01em' }}>{merchant?.name || 'Merchant'}</div>
             <div style={{ font: "400 10.5px/1 'Inter'", color: 'rgba(245,245,247,.38)' }}>{merchant?.mcc ? `MCC ${merchant.mcc} · ${merchant.category || ''}` : 'MCC unknown'}</div>
