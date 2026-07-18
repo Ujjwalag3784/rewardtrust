@@ -1,163 +1,123 @@
 import React from 'react';
 import formatCurrency from '../utils/formatCurrency';
-import { tierLabel, formatVerified } from '../utils/labels';
+import { cardArt } from '../utils/cardArt';
+import { formatVerified } from '../utils/labels';
 
-const VERDICT_META = {
-  eligible: { label: 'ELIGIBLE', cls: 'text-emerald' },
-  partial: { label: 'PARTIAL', cls: 'text-yellow' },
-  ineligible: { label: 'NOT ELIGIBLE', cls: 'text-red' },
-  unknown: { label: 'UNKNOWN', cls: 'text-muted' },
+const VMETA = {
+  eligible: { label: 'Eligible', c: '#34D399', bg: 'rgba(52,211,153,.1)', bd: 'rgba(52,211,153,.25)' },
+  partial: { label: 'Partial', c: '#F59E0B', bg: 'rgba(245,158,11,.1)', bd: 'rgba(245,158,11,.25)' },
+  ineligible: { label: 'Not eligible', c: '#F87171', bg: 'rgba(248,113,113,.1)', bd: 'rgba(248,113,113,.25)' },
+  unknown: { label: 'Unknown', c: '#6B7280', bg: 'rgba(107,114,128,.1)', bd: 'rgba(107,114,128,.25)' },
 };
 
+function ageDays(iso) {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return null;
+  return Math.max(0, Math.round((Date.now() - d.getTime()) / 86400000));
+}
+
 export default function TrustReportScreen({ report, method, spendAmount, onBack }) {
-  if (!report) return <div className="screen-container">No report available</div>;
-
-  const score = report.confidence?.score ?? report.confidenceScore ?? 0;
-  const band = report.confidence?.band || (score >= 80 ? 'high' : score >= 60 ? 'medium' : 'low');
-  const basisFactors = (report.confidence?.basis || '').split(';').map((s) => s.trim()).filter(Boolean);
-  const ageDays = report.confidence?.ageDays;
-  const source = report.source || {};
-  const verdict = report.verdict || 'unknown';
-
-  const trustLabel = band === 'high' ? 'HIGH CONFIDENCE' : band === 'medium' ? 'MEDIUM CONFIDENCE' : 'LOW CONFIDENCE';
-  const trustColorClass = band === 'high' ? 'text-emerald' : band === 'medium' ? 'text-yellow' : 'text-red';
-  const strokeDashoffset = 251.2 - (251.2 * score) / 100;
-  const vMeta = VERDICT_META[verdict] || VERDICT_META.unknown;
+  if (!report) return <div style={{ padding: 40, color: 'rgba(245,245,247,.5)' }}>No report available.</div>;
+  const score = report.confidence?.score ?? 0;
+  const v = VMETA[report.verdict] || VMETA.unknown;
+  const C = 2 * Math.PI * 74; // ≈465
+  const dash = `${(C * score) / 100} ${C}`;
+  const art = cardArt(report.methodId);
+  const src = report.source || {};
+  const age = ageDays(src.lastVerified);
+  const fresh = age != null && age <= 30;
+  const hasReward = report.verdict === 'eligible' || report.verdict === 'partial';
 
   return (
-    <div className="screen-container trust-report-screen">
-      <div className="results-header-bar">
-        <button className="back-btn" aria-label="Back to results" onClick={onBack}>←</button>
-        <h2 className="header-title">Trust Report</h2>
-        <span className="bell-icon" aria-hidden="true">🔔</span>
-      </div>
-
-      <div className="trust-meta-subbar">
-        <div className="subbar-unit">
-          <span className="subbar-lbl">FOR RECOMMENDATION</span>
-          <span className="subbar-val">{method?.name} · {formatCurrency(spendAmount)}</span>
-        </div>
-        <div className="subbar-unit text-right">
-          <span className="subbar-lbl">REPORT ID</span>
-          <span className="subbar-val">#RT-{report.methodId}-{report.mcc || 'na'}</span>
+    <div style={{ padding: '0 22px' }}>
+      <div style={{ padding: '6px 0 0', display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+        <button onClick={onBack} aria-label="Back" style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.6)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 5l-7 7 7 7" /></svg>
+        </button>
+        <div>
+          <div style={{ font: "600 15px/1 'Outfit'", color: '#F5F5F7', letterSpacing: '-.01em' }}>Trust Report</div>
+          <div style={{ font: "400 10.5px/1 'Inter'", color: 'rgba(245,245,247,.38)' }}>{report.cardName} · {formatCurrency(spendAmount)}</div>
         </div>
       </div>
 
-      <div className="trust-body animate-slide-up">
-        <div className="trust-verdict-card">
-          <div className="verdict-text-block">
-            <div className="verdict-lbl">TRUST VERDICT</div>
-            <h1 className={`verdict-title ${trustColorClass}`}>{trustLabel}</h1>
-            <p className="verdict-desc">
-              Verdict: <strong className={vMeta.cls}>{vMeta.label}</strong> · {tierLabel(source.tier)}
-            </p>
-          </div>
-          <div className="gauge-wrapper">
-            <svg width="100" height="100" className="circular-gauge" role="img" aria-label={`Confidence ${score} of 100`}>
-              <circle cx="50" cy="50" r="40" className="gauge-bg" />
-              <circle
-                cx="50"
-                cy="50"
-                r="40"
-                className={`gauge-bar ${trustColorClass}-stroke`}
-                strokeDasharray="251.2"
-                strokeDashoffset={strokeDashoffset}
-              />
-            </svg>
-            <div className="gauge-score-value">{score}<span>/100</span></div>
-          </div>
+      {/* Gauge */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0 16px' }}>
+        <svg width="186" height="186" viewBox="0 0 186 186">
+          <circle cx="93" cy="93" r="74" fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="10" />
+          <circle cx="93" cy="93" r="74" fill="none" stroke={v.c} strokeWidth="10" strokeLinecap="round" strokeDasharray={dash} transform="rotate(-90 93 93)" opacity=".9" />
+          <text x="93" y="86" textAnchor="middle" fill="#F5F5F7" fontFamily="Outfit" fontWeight="700" fontSize="46" letterSpacing="-2">{score}</text>
+          <text x="93" y="104" textAnchor="middle" fill="rgba(245,245,247,0.35)" fontFamily="Inter" fontSize="10.5" fontWeight="600" letterSpacing="2">CONFIDENCE</text>
+        </svg>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: v.bg, border: `1px solid ${v.bd}`, borderRadius: 8, padding: '6px 14px', marginTop: -4 }}>
+          <div style={{ width: 8, height: 8, background: v.c, borderRadius: '50%' }} />
+          <span style={{ font: "700 12px/1 'Inter'", letterSpacing: '.1em', textTransform: 'uppercase', color: v.c }}>{v.label}</span>
         </div>
+      </div>
 
-        <div className="breakdown-card">
-          <div className="breakdown-header">
-            <span className="breakdown-lbl">WHY THIS VERDICT</span>
+      {/* Card context */}
+      <div style={{ background: '#141418', border: '1px solid rgba(255,255,255,.08)', borderRadius: 14, padding: 14, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ width: 44, height: 28, background: art.grad, borderRadius: 7, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span style={{ font: "700 8px/1 'Outfit'", color: 'rgba(255,255,255,.5)' }}>{art.short}</span></div>
+        <div style={{ flex: 1 }}>
+          <div style={{ font: "500 12.5px/1.4 'Inter'", color: '#F5F5F7', marginBottom: 3 }}>
+            {hasReward
+              ? <>{report.cardName} earns <span style={{ color: '#34D399', fontWeight: 600 }}>{formatCurrency(report.rewardValueInr)} ({(report.effectiveRate * 100).toFixed(report.effectiveRate < 0.1 ? 1 : 0)}%)</span> on this transaction.</>
+              : report.verdict === 'ineligible'
+                ? <>{report.cardName} earns <span style={{ color: '#F87171', fontWeight: 600 }}>no reward</span> here.</>
+                : <>Reward for {report.cardName} <span style={{ color: '#6B7280', fontWeight: 600 }}>cannot be confirmed</span>.</>}
           </div>
-          <p className="verdict-reason-text">{report.reason}</p>
-          {report.mcc && (
-            <div className="mcc-chip-row">
-              <span className="mcc-chip">MCC {report.mcc} · {report.mccLabel}</span>
-              {report.appliedRule && <span className="mcc-chip">Rule: {report.appliedRule.label}</span>}
-            </div>
-          )}
-          {report.cap && report.cap.applied && (
-            <p className="step-details">
-              Reward capped at ₹{report.cap.value} per {report.cap.period}
-              {report.cap.needsVerification ? ' (cap value needs re-verification)' : ''}.
-            </p>
-          )}
+          <div style={{ font: "400 10.5px/1.3 'Inter'", color: 'rgba(245,245,247,.4)' }}>{report.reason}</div>
         </div>
+      </div>
 
-        <div className="breakdown-card">
-          <div className="breakdown-header">
-            <span className="breakdown-lbl">CONFIDENCE BREAKDOWN</span>
-            <span className={`breakdown-pts ${trustColorClass}`}>{score} pts</span>
+      {/* Official Quote */}
+      <div style={{ background: '#141418', border: '1px solid rgba(255,255,255,.08)', borderRadius: 14, overflow: 'hidden', marginBottom: 14 }}>
+        <div style={{ padding: '10px 14px', borderBottom: '1px solid rgba(255,255,255,.06)', display: 'flex', alignItems: 'center', gap: 7 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.4)" strokeWidth="1.5" strokeLinecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /></svg>
+          <span style={{ font: "600 9.5px/1 'Inter'", letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(245,245,247,.38)' }}>Official T&amp;C Quote</span>
+        </div>
+        <div style={{ padding: '13px 14px' }}>
+          <div style={{ font: "400 12.5px/1.7 'Inter'", color: 'rgba(245,245,247,.7)', fontStyle: 'italic', marginBottom: 10 }}>{src.quote ? `"${src.quote}"` : 'No official quote is on file for this rule — treat as unverified.'}</div>
+          {src.title && <div style={{ font: "500 10.5px/1 'Inter'", color: 'rgba(245,245,247,.35)' }}>— {src.title}</div>}
+        </div>
+      </div>
+
+      {/* Source link */}
+      {src.url && (
+        <a href={src.url} target="_blank" rel="noopener noreferrer" style={{ background: '#141418', border: '1px solid rgba(255,255,255,.08)', borderRadius: 13, padding: '12px 14px', display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14, textDecoration: 'none' }}>
+          <div style={{ width: 32, height: 32, background: 'rgba(52,211,153,.1)', borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34D399" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" /></svg>
           </div>
-          <ul className="conditions-bullet-list">
-            {basisFactors.map((f, idx) => (
-              <li key={idx} className="cond-bullet text-muted">
-                <span className="cond-icon" aria-hidden="true">•</span> {f}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="source-quality-card">
-          <h4 className="timeline-section-title">SOURCE</h4>
-          <div className="sources-list">
-            <div className="source-row">
-              <span className="source-indicator green" aria-hidden="true">🛡️</span>
-              {source.url ? (
-                <a className="source-link-text" href={source.url} target="_blank" rel="noopener noreferrer">
-                  {source.url.replace(/^https?:\/\//, '').slice(0, 46)}… ↗
-                </a>
-              ) : (
-                <span className="source-link-text">No source URL on file</span>
-              )}
-              <span className="source-tier-badge primary">{tierLabel(source.tier).toUpperCase()}</span>
-            </div>
-            {source.note && <p className="step-details">{source.note}</p>}
-            {report.notes && <p className="step-details">{report.notes}</p>}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ font: "500 12px/1.3 'Inter'", color: '#34D399', marginBottom: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{src.url.replace(/^https?:\/\//, '')}</div>
+            <div style={{ font: "400 10.5px/1.3 'Inter'", color: 'rgba(245,245,247,.38)' }}>Official source · opens live URL</div>
           </div>
-        </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" /></svg>
+        </a>
+      )}
 
-        <div className="freshness-card">
-          <div className="freshness-row">
-            <div>
-              <span className="freshness-lbl">LAST VERIFIED (SOURCE)</span>
-              <h3 className="freshness-date">{formatVerified(source.lastVerified)}</h3>
-            </div>
-            <span className="freshness-status-badge">
-              {ageDays != null ? `${ageDays} days old` : 'age unknown'}
-            </span>
+      {/* Freshness */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 2px', marginBottom: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
+          <span style={{ font: "400 12px/1 'Inter'", color: 'rgba(245,245,247,.45)' }}>Last verified: {formatVerified(src.lastVerified)}</span>
+        </div>
+        {age != null && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: fresh ? 'rgba(52,211,153,.08)' : 'rgba(245,158,11,.08)', border: `1px solid ${fresh ? 'rgba(52,211,153,.18)' : 'rgba(245,158,11,.18)'}`, borderRadius: 6, padding: '3px 9px' }}>
+            <div style={{ width: 5, height: 5, background: fresh ? '#34D399' : '#F59E0B', borderRadius: '50%' }} />
+            <span style={{ font: "600 9.5px/1 'Inter'", letterSpacing: '.06em', color: fresh ? '#34D399' : '#F59E0B' }}>{fresh ? 'FRESH' : 'AGING'}</span>
+            <span style={{ font: "400 9.5px/1 'Inter'", color: fresh ? 'rgba(52,211,153,.6)' : 'rgba(245,158,11,.6)' }}>{age}d ago</span>
           </div>
-          {ageDays != null && ageDays > 90 && (
-            <div className="next-sched-row">
-              <span>⚠️ Source data is over 90 days old — reward terms may have changed. Re-verify before large spends.</span>
-            </div>
-          )}
-        </div>
+        )}
+      </div>
 
-        <div className="methodology-card">
-          <h4 className="methodology-title">How this confidence is calculated</h4>
-          <ul className="methodology-points">
-            <li>
-              <span className="bullet-num">1</span>
-              <div><strong>Source tier:</strong> official terms score higher than FAQs or community reports.</div>
-            </li>
-            <li>
-              <span className="bullet-num">2</span>
-              <div><strong>Data age:</strong> confidence decays as the last-verified date gets older.</div>
-            </li>
-            <li>
-              <span className="bullet-num">3</span>
-              <div><strong>MCC certainty:</strong> an uncertain merchant category code lowers confidence, because the reward hinges on the MCC the issuer actually uses.</div>
-            </li>
-            <li>
-              <span className="bullet-num">4</span>
-              <div><strong>Live outcomes:</strong> confirmed post-payment results (from History) nudge the score up or down.</div>
-            </li>
-          </ul>
+      <div style={{ height: 1, background: 'rgba(255,255,255,.06)', marginBottom: 14 }} />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 2px', marginBottom: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,247,.35)" strokeWidth="1.5" strokeLinecap="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+          <span style={{ font: "400 12px/1 'Inter'", color: 'rgba(245,245,247,.4)' }}>Seen different terms?</span>
         </div>
+        <span style={{ font: "500 12px/1 'Inter'", color: '#34D399' }}>Report an issue ›</span>
       </div>
     </div>
   );
