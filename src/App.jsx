@@ -140,13 +140,15 @@ export default function App() {
   };
 
   const showTab = !['login', 'wallet', 'scan'].includes(route);
+  const fullBody = route === 'assistant' || route === 'scan';
+  const showStatus = route !== 'scan';
 
   return (
     <div className="app-shell-backdrop">
       <div className="rp">
         <div className="rdi" />
-        <StatusBar />
-        <div className="rs">{renderRoute()}</div>
+        {showStatus && <StatusBar />}
+        {fullBody ? renderRoute() : <div className="rs">{renderRoute()}</div>}
         {showTab && <TabBar active={activeTab} onTab={(id) => (
           id === 'explore' ? navigate('landing')
             : id === 'assistant' ? openAssistant('')
